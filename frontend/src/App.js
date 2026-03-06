@@ -3,7 +3,7 @@ import "@/App.css";
 import {
   MapPin, Anchor, Users, Clock, ChevronDown, ChevronLeft, ChevronRight,
   Star, Compass, Phone, Mail, Instagram, Facebook, Send, Heart, CircleCheckBig,
-  X, Check, Calendar, Sparkles
+  X, Check, Calendar, Sparkles, Shield, Fish, Waves, Droplets, Music, Bath, UserCheck
 } from "lucide-react";
 import {
   Accordion,
@@ -171,6 +171,64 @@ const faqs = [
 
 // Hero Video URL
 const HERO_VIDEO_URL = "https://customer-assets.emergentagent.com/job_webpage-archive-1/artifacts/t8sqd8nt_video%20portada%20mar%20de%20cortes.mp4";
+
+// Testimonials Data
+const testimonials = [
+  {
+    name: "María González",
+    location: "Hermosillo, Sonora",
+    yacht: "Adios Dinero",
+    rating: 5,
+    text: "¡Experiencia increíble! Rentamos el Adios Dinero para el cumpleaños de mi esposo y fue inolvidable. El capitán y el marinero fueron muy atentos, el ceviche estaba delicioso y el paisaje espectacular. Definitivamente volveremos."
+  },
+  {
+    name: "Carlos Ramirez",
+    location: "Ciudad Obregón, Sonora",
+    yacht: "Derby",
+    rating: 5,
+    text: "La mejor experiencia de pesca que he tenido. El yate Derby está perfectamente equipado y el capitán conoce los mejores spots. Capturamos varios peces y el ceviche que prepararon con nuestra pesca fue el mejor que he probado."
+  },
+  {
+    name: "Familia López",
+    location: "Guadalajara, Jalisco",
+    yacht: "Mar de Cortez",
+    rating: 5,
+    text: "Celebramos el aniversario de bodas de mis padres en el Mar de Cortez y fue mágico. El yate es impresionante, muy espacioso y lujoso. La tripulación se encargó de todos los detalles. 100% recomendado."
+  },
+  {
+    name: "Ana Patricia",
+    location: "Tijuana, B.C.",
+    yacht: "Annabella",
+    rating: 5,
+    text: "Despedida de soltera inolvidable en la Annabella. Bailamos, nadamos, tomamos fotos increíbles y el servicio fue impecable. Mis amigas quedaron fascinadas. ¡Gracias por hacerlo posible!"
+  },
+  {
+    name: "Roberto Mendoza",
+    location: "Culiacán, Sinaloa",
+    yacht: "Adios Dinero",
+    rating: 5,
+    text: "Llevé a mi familia de pesca y fue un día perfecto. Los niños se divirtieron mucho con el tapete acuático y nosotros disfrutamos la pesca. El marinero fue muy paciente con los niños. Excelente servicio."
+  },
+  {
+    name: "Diana Herrera",
+    location: "Monterrey, N.L.",
+    yacht: "Adios Dinero",
+    rating: 5,
+    text: "El atardecer romántico superó todas mis expectativas. Ver el sol ponerse desde el mar con mi pareja fue mágico. Todo estuvo perfectamente organizado. Gracias por esta experiencia inolvidable."
+  }
+];
+
+// Amenities Data
+const amenities = [
+  { icon: "fish", title: "Equipo de Pesca", description: "Cañas, carretes y señuelos incluidos" },
+  { icon: "waves", title: "Tapete Acuático", description: "Diversión garantizada en el agua" },
+  { icon: "droplets", title: "Hielera con Hielo", description: "Tus bebidas siempre frías" },
+  { icon: "shield", title: "Salvavidas", description: "Certificados para todos los pasajeros" },
+  { icon: "check", title: "Agua", description: "Botellas de agua ilimitadas" },
+  { icon: "bath", title: "Baño", description: "Comodidad a bordo" },
+  { icon: "users", title: "Marinero", description: "Asistencia personalizada" },
+  { icon: "music", title: "Música", description: "Sistema de sonido Bluetooth" }
+];
 
 // Yacht Detail Modal Component
 const YachtDetailModal = ({ yacht, isOpen, onClose, onReserve }) => {
@@ -565,6 +623,57 @@ const ExperiencesSection = ({ onReserve }) => {
             <ExperienceCard key={exp.id} experience={exp} onReserve={onReserve} />
           ))}
         </div>
+      </div>
+    </section>
+  );
+};
+
+// Amenities Section
+const AmenitiesSection = () => {
+  const getIcon = (iconName) => {
+    switch (iconName) {
+      case 'fish': return <Fish className="w-8 h-8" />;
+      case 'waves': return <Waves className="w-8 h-8" />;
+      case 'droplets': return <Droplets className="w-8 h-8" />;
+      case 'shield': return <Shield className="w-8 h-8" />;
+      case 'check': return <Check className="w-8 h-8" />;
+      case 'bath': return <Bath className="w-8 h-8" />;
+      case 'users': return <Users className="w-8 h-8" />;
+      case 'music': return <Music className="w-8 h-8" />;
+      default: return <Check className="w-8 h-8" />;
+    }
+  };
+
+  return (
+    <section id="amenidades" className="section-padding bg-slate-50">
+      <div className="container-custom mx-auto">
+        <div className="text-center mb-16">
+          <span className="inline-flex items-center justify-center rounded-full border px-3 py-1 text-xs font-medium mb-4 bg-[hsl(var(--gold))]/20 text-[hsl(var(--gold))]">
+            <Sparkles className="w-4 h-4 mr-1" /> Amenidades
+          </span>
+          <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
+            Todo Incluido para tu <span className="text-gradient">Comodidad</span>
+          </h2>
+          <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+            Nos encargamos de cada detalle para que solo te preocupes por disfrutar.
+          </p>
+        </div>
+        
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          {amenities.map((amenity, index) => (
+            <div
+              key={index}
+              className="bg-white rounded-xl p-6 text-center hover:shadow-lg transition-shadow border border-slate-100"
+              data-testid={`amenity-${index}`}
+            >
+              <div className="text-[hsl(var(--primary))] mb-4 flex justify-center">
+                {getIcon(amenity.icon)}
+              </div>
+              <h3 className="font-bold text-slate-900 mb-1">{amenity.title}</h3>
+              <p className="text-sm text-slate-600">{amenity.description}</p>
+            </div>
+          ))}
+        </div>
         
         {/* Ceviche Banner */}
         <div className="mt-12 bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--ocean-deep))] rounded-2xl p-8 text-white">
@@ -578,6 +687,153 @@ const ExperiencesSection = ({ onReserve }) => {
             <div className="text-right">
               <div className="text-4xl font-bold text-[hsl(var(--gold))]">4+</div>
               <div className="text-white/80">horas</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+// Captain & Crew Section
+const CrewSection = () => {
+  return (
+    <section id="tripulacion" className="section-padding bg-white">
+      <div className="container-custom mx-auto">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          {/* Content */}
+          <div>
+            <span className="inline-flex items-center justify-center rounded-full border px-3 py-1 text-xs font-medium mb-4 bg-[hsl(var(--primary))]/10 text-[hsl(var(--primary))]">
+              <Anchor className="w-4 h-4 mr-1" /> Capitán y Tripulación
+            </span>
+            <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-8">
+              Navega con los <span className="text-gradient">Mejores</span>
+            </h2>
+            
+            {/* Captain */}
+            <div className="bg-slate-50 rounded-xl p-6 mb-6">
+              <div className="flex items-center gap-3 mb-3">
+                <Anchor className="w-5 h-5 text-[hsl(var(--primary))]" />
+                <h3 className="font-bold text-slate-900">Capitán Certificado</h3>
+              </div>
+              <p className="text-slate-600 mb-4">
+                Nuestro capitán cuenta con más de 15 años de experiencia navegando el Mar de Cortés. Certificado por la Marina Mercante Nacional y con entrenamiento internacional en seguridad marítima (STCW), su prioridad siempre es tu seguridad y disfrute.
+              </p>
+              <div className="flex flex-wrap gap-2">
+                <span className="text-xs bg-[hsl(var(--primary))]/10 text-[hsl(var(--primary))] px-3 py-1 rounded-full">15+ años de experiencia</span>
+                <span className="text-xs bg-[hsl(var(--primary))]/10 text-[hsl(var(--primary))] px-3 py-1 rounded-full">Certificación STCW</span>
+                <span className="text-xs bg-[hsl(var(--primary))]/10 text-[hsl(var(--primary))] px-3 py-1 rounded-full">Primeros Auxilios</span>
+                <span className="text-xs bg-[hsl(var(--primary))]/10 text-[hsl(var(--primary))] px-3 py-1 rounded-full">Pesca experto</span>
+              </div>
+            </div>
+            
+            {/* Marinero */}
+            <div className="bg-slate-50 rounded-xl p-6 mb-6">
+              <div className="flex items-center gap-3 mb-3">
+                <Users className="w-5 h-5 text-[hsl(var(--primary))]" />
+                <h3 className="font-bold text-slate-900">Marinero Asistente</h3>
+              </div>
+              <p className="text-slate-600">
+                En nuestros yates más grandes (Adios Dinero, Annabella y Mar de Cortez), un marinero asistente se encarga de atender todas tus necesidades: desde preparar el equipo de pesca hasta servir bebidas refrescantes.
+              </p>
+            </div>
+            
+            {/* Safety */}
+            <div className="bg-[hsl(var(--primary))]/5 border-l-4 border-[hsl(var(--primary))] rounded-r-xl p-6">
+              <div className="flex items-center gap-3 mb-2">
+                <Shield className="w-5 h-5 text-[hsl(var(--primary))]" />
+                <h3 className="font-bold text-slate-900">Tu Seguridad es Primero</h3>
+              </div>
+              <p className="text-slate-600">
+                Antes de zarpar, recibirás una charla completa de seguridad. Contamos con todo el equipo de seguridad requerido y certificados al día.
+              </p>
+            </div>
+          </div>
+          
+          {/* Image */}
+          <div className="relative">
+            <img
+              src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&h=800&fit=crop"
+              alt="Capitán profesional"
+              className="rounded-2xl shadow-2xl w-full object-cover h-[600px]"
+            />
+            <div className="absolute bottom-6 right-6 bg-[hsl(var(--gold))] text-slate-900 px-6 py-4 rounded-xl shadow-lg">
+              <div className="text-3xl font-bold">15+</div>
+              <div className="text-sm">Años de Experiencia</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+// Testimonials Section
+const TestimonialsSection = () => {
+  return (
+    <section id="testimonios" className="section-padding bg-slate-900 text-white">
+      <div className="container-custom mx-auto">
+        <div className="text-center mb-16">
+          <span className="inline-flex items-center justify-center rounded-full border border-[hsl(var(--gold))]/30 px-3 py-1 text-xs font-medium mb-4 bg-[hsl(var(--gold))]/10 text-[hsl(var(--gold))]">
+            <Star className="w-4 h-4 mr-1" /> Testimonios
+          </span>
+          <h2 className="text-4xl md:text-5xl font-bold mb-4">
+            Lo que dicen nuestros <span className="text-[hsl(var(--gold))]">Clientes</span>
+          </h2>
+          <p className="text-lg text-white/70 max-w-2xl mx-auto">
+            Experiencias reales de personas que han disfrutado de nuestros yates en el Mar de Cortés.
+          </p>
+        </div>
+        
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {testimonials.map((testimonial, index) => (
+            <div
+              key={index}
+              className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-xl p-6 hover:border-[hsl(var(--gold))]/30 transition-colors"
+              data-testid={`testimonial-${index}`}
+            >
+              {/* Stars */}
+              <div className="flex gap-1 mb-4">
+                {[...Array(testimonial.rating)].map((_, i) => (
+                  <Star key={i} className="w-5 h-5 fill-[hsl(var(--gold))] text-[hsl(var(--gold))]" />
+                ))}
+              </div>
+              
+              {/* Quote */}
+              <p className="text-white/80 italic mb-6 leading-relaxed">
+                "{testimonial.text}"
+              </p>
+              
+              {/* Author */}
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="font-bold text-white">{testimonial.name}</div>
+                  <div className="text-sm text-white/50">{testimonial.location}</div>
+                </div>
+                <span className="text-xs bg-slate-700 text-white/70 px-3 py-1 rounded-full">
+                  {testimonial.yacht}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+        
+        {/* Stats */}
+        <div className="mt-16 bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-2xl p-8">
+          <div className="grid grid-cols-3 gap-8 text-center">
+            <div>
+              <div className="text-4xl md:text-5xl font-bold text-[hsl(var(--gold))]">4.9</div>
+              <div className="text-white/60 mt-1">Promedio</div>
+            </div>
+            <div>
+              <div className="text-4xl md:text-5xl font-bold text-[hsl(var(--gold))]">500+</div>
+              <div className="text-white/60 mt-1">Reseñas</div>
+            </div>
+            <div>
+              <div className="text-4xl md:text-5xl font-bold text-[hsl(var(--gold))] flex items-center justify-center gap-1">
+                5<Star className="w-8 h-8 fill-[hsl(var(--gold))]" />
+              </div>
+              <div className="text-white/60 mt-1">Calificación</div>
             </div>
           </div>
         </div>
@@ -1158,6 +1414,9 @@ function App() {
       <HeroSection />
       <FleetSection onViewDetails={handleViewDetails} />
       <ExperiencesSection onReserve={scrollToContact} />
+      <AmenitiesSection />
+      <CrewSection />
+      <TestimonialsSection />
       <ProcessSection />
       <FAQSection />
       <ContactSection />
