@@ -666,6 +666,7 @@ const ContactSection = () => {
     date: '',
     guests: '',
     yacht: '',
+    hours: '',
     message: ''
   });
 
@@ -700,6 +701,7 @@ const ContactSection = () => {
 📅 *Fecha deseada:* ${fechaFormateada}
 👥 *Número de personas:* ${formData.guests}
 ⚓ *Yate preferido:* ${getYachtName(formData.yacht)}
+⏱️ *Horas de paseo:* ${formData.hours} horas
 
 💬 *Mensaje:* ${formData.message || 'Sin mensaje adicional'}
 
@@ -886,21 +888,40 @@ _Enviado desde la página web_`;
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium mb-1">Yate Preferido</label>
+                    <label className="block text-sm font-medium mb-1">Horas de Paseo</label>
                     <select
                       required
-                      value={formData.yacht}
-                      onChange={(e) => setFormData({ ...formData, yacht: e.target.value })}
+                      value={formData.hours}
+                      onChange={(e) => setFormData({ ...formData, hours: e.target.value })}
                       className="w-full h-10 px-3 rounded-md border border-slate-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--primary))]"
-                      data-testid="contact-yacht"
+                      data-testid="contact-hours"
                     >
                       <option value="">Selecciona...</option>
-                      <option value="derby">Derby ($1,600/hr)</option>
-                      <option value="adios-dinero">Adios Dinero ($2,200/hr)</option>
-                      <option value="annabella">Annabella ($3,100/hr)</option>
-                      <option value="mar-de-cortez">Mar de Cortez ($3,500-$4,500/hr)</option>
+                      <option value="3">3 horas (mínimo)</option>
+                      <option value="4">4 horas</option>
+                      <option value="5">5 horas</option>
+                      <option value="6">6 horas</option>
+                      <option value="7">7 horas</option>
+                      <option value="8">8 horas</option>
                     </select>
                   </div>
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium mb-1">Yate Preferido</label>
+                  <select
+                    required
+                    value={formData.yacht}
+                    onChange={(e) => setFormData({ ...formData, yacht: e.target.value })}
+                    className="w-full h-10 px-3 rounded-md border border-slate-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--primary))]"
+                    data-testid="contact-yacht"
+                  >
+                    <option value="">Selecciona...</option>
+                    <option value="derby">Derby ($1,600/hr)</option>
+                    <option value="adios-dinero">Adios Dinero ($2,200/hr)</option>
+                    <option value="annabella">Annabella ($3,100/hr)</option>
+                    <option value="mar-de-cortez">Mar de Cortez ($3,500-$4,500/hr)</option>
+                  </select>
                 </div>
                 
                 <div>
