@@ -322,7 +322,9 @@ const HeroSection = () => {
           loop
           muted
           playsInline
+          preload="auto"
           className="w-full h-full object-cover"
+          style={{ imageRendering: 'high-quality' }}
           data-testid="hero-video"
         >
           <source src={HERO_VIDEO_URL} type="video/mp4" />
