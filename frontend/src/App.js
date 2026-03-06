@@ -16,6 +16,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
 } from "@/components/ui/dialog";
 
 // Yacht Data with extended details
@@ -190,7 +191,7 @@ const YachtDetailModal = ({ yacht, isOpen, onClose, onReserve }) => {
           {/* Header */}
           <DialogHeader className="mb-4">
             <DialogTitle className="text-3xl font-bold text-slate-900">{yacht.name}</DialogTitle>
-            <p className="text-slate-600 mt-1">{yacht.shortDescription}</p>
+            <DialogDescription className="text-slate-600 mt-1">{yacht.shortDescription}</DialogDescription>
           </DialogHeader>
 
           {/* Image */}
