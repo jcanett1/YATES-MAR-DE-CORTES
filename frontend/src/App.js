@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import "@/App.css";
 import {
   MapPin, Anchor, Users, Clock, ChevronDown, ChevronLeft, ChevronRight,
-  Star, Compass, Phone, Mail, Instagram, Facebook, Send, Heart, CircleCheckBig
+  Star, Compass, Phone, Mail, Instagram, Facebook, Send, Heart, CircleCheckBig,
+  X, Check, Calendar, Sparkles
 } from "lucide-react";
 import {
   Accordion,
@@ -10,8 +11,14 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
-// Yacht Data
+// Yacht Data with extended details
 const yachts = [
   {
     id: "derby",
@@ -20,10 +27,13 @@ const yachts = [
     priceRange: null,
     capacity: 6,
     length: "28 pies",
-    description: "Embarcación perfecta para pesca y paseos íntimos en el Mar de Cortés.",
+    shortDescription: "Embarcación perfecta para pesca y paseos íntimos en el Mar de Cortés.",
+    fullDescription: "El 'Derby' es una embarcación ágil y versátil, ideal para grupos pequeños que buscan una experiencia auténtica de pesca o un paseo tranquilo por las aguas cristalinas del Mar de Cortés. Equipado con todo lo necesario para una jornada exitosa en el mar.",
     image: "https://4sdu63dub3c3u.ok.kimi.link/yate-derby.jpg",
-    features: ["Equipo de pesca completo", "Hielera con hielo", "Salvavidas certificados", "Botellas de agua", "Capitán certificado", "Combustible incluido", "Radio VHF"],
-    isPremium: false
+    services: ["Pesca deportiva", "Paseos por el mar", "Day charter"],
+    includes: ["Equipo de pesca completo", "Hielera con hielo", "Salvavidas certificados", "Botellas de agua", "Baño", "Sistema de música", "Ceviche (a partir de 4 horas)"],
+    isPremium: false,
+    priceOptions: null
   },
   {
     id: "adios-dinero",
@@ -32,10 +42,13 @@ const yachts = [
     priceRange: null,
     capacity: 15,
     length: "38 pies",
-    description: "Espacio, comodidad y diversión para grupos medianos con servicio completo.",
+    shortDescription: "Espacio, comodidad y diversión para grupos medianos con servicio completo.",
+    fullDescription: "El 'Adios Dinero' ofrece el equilibrio perfecto entre espacio y comodidad. Con capacidad para 15 personas, es ideal para celebraciones familiares, reuniones de amigos o simplemente disfrutar de un día inolvidable en el mar con todo el servicio incluido.",
     image: "https://4sdu63dub3c3u.ok.kimi.link/yate-adios-dinero.jpg",
-    features: ["Tapete acuático", "Equipo de pesca completo", "Hielera con hielo", "Salvavidas certificados", "Bocinas bluetooth", "Sombra", "Baño a bordo", "Ceviche en paseos 4+ hrs"],
-    isPremium: false
+    services: ["Day charter", "Fiestas a bordo", "Pesca deportiva", "Paseos familiares"],
+    includes: ["Tapete acuático", "Equipo de pesca completo", "Hielera con hielo", "Salvavidas certificados", "Botellas de agua", "Baño", "Marinero asistiendo", "Sistema de música", "Ceviche (a partir de 4 horas)"],
+    isPremium: false,
+    priceOptions: null
   },
   {
     id: "annabella",
@@ -44,10 +57,13 @@ const yachts = [
     priceRange: null,
     capacity: 18,
     length: "45 pies",
-    description: "Lujo y elegancia para grupos grandes que buscan una experiencia premium.",
+    shortDescription: "Lujo y elegancia para grupos grandes que buscan una experiencia premium.",
+    fullDescription: "La 'Annabella' es sinónimo de elegancia en el mar. Esta imponente embarcación ofrece espacios amplios, acabados de lujo y un servicio impecable. Perfecta para eventos especiales, celebraciones importantes o simplemente para quienes buscan lo mejor.",
     image: "https://4sdu63dub3c3u.ok.kimi.link/yate-annabella.jpg",
-    features: ["Tapete acuático", "Equipo de pesca completo", "Hielera con hielo", "Salvavidas certificados", "Sistema de sonido premium", "Área lounge", "Baño completo", "Ceviche en paseos 4+ hrs"],
-    isPremium: true
+    services: ["Day charter premium", "Eventos especiales", "Celebraciones", "Pesca de lujo"],
+    includes: ["Tapete acuático", "Equipo de pesca completo", "Hielera con hielo", "Salvavidas certificados", "Botellas de agua", "Baño", "Marinero asistiendo", "Sistema de música premium", "Ceviche (a partir de 4 horas)"],
+    isPremium: true,
+    priceOptions: null
   },
   {
     id: "mar-de-cortez",
@@ -56,22 +72,18 @@ const yachts = [
     priceRange: true,
     capacity: 25,
     length: "55 pies",
-    description: "La joya de la corona. El yate más grande con opciones flexibles de capacidad.",
+    shortDescription: "La joya de la corona. El yate más grande con opciones flexibles de capacidad.",
+    fullDescription: "El 'Mar de Cortez' es nuestra embarcación insignia, diseñada para ofrecer la máxima experiencia de lujo en el mar. Con múltiples opciones de capacidad, se adapta a grupos de diferentes tamaños sin sacrificar comodidad ni estilo. La elección perfecta para quienes buscan lo extraordinario.",
     image: "https://4sdu63dub3c3u.ok.kimi.link/yate-mar-de-cortes.jpg",
-    features: ["Tapete acuático", "Equipo de pesca completo", "Hielera con hielo", "Salvavidas certificados", "Sistema de sonido premium", "Área lounge amplia", "Baño completo", "Ceviche incluido"],
-    isPremium: true
+    services: ["Day charter de lujo", "Eventos corporativos", "Bodas en yate", "Grandes celebraciones"],
+    includes: ["Tapete acuático", "Equipo de pesca completo", "Hielera con hielo", "Salvavidas certificados", "Botellas de agua", "Baño", "Marinero asistiendo", "Sistema de música premium", "Ceviche (a partir de 4 horas)"],
+    isPremium: true,
+    priceOptions: [
+      { price: "$3,500", capacity: "Hasta 15 personas" },
+      { price: "$4,000", capacity: "Hasta 20 personas" },
+      { price: "$4,500", capacity: "Hasta 25 personas" }
+    ]
   }
-];
-
-const heroImages = [
-  "https://4sdu63dub3c3u.ok.kimi.link/yate-derby.jpg",
-  "https://4sdu63dub3c3u.ok.kimi.link/yate-adios-dinero.jpg",
-  "https://4sdu63dub3c3u.ok.kimi.link/yate-annabella.jpg",
-  "https://4sdu63dub3c3u.ok.kimi.link/yate-mar-de-cortes.jpg",
-  "https://4sdu63dub3c3u.ok.kimi.link/adiosdinero2.jpg",
-  "https://4sdu63dub3c3u.ok.kimi.link/annabella2.jpg",
-  "https://4sdu63dub3c3u.ok.kimi.link/derby2.jpg",
-  "https://4sdu63dub3c3u.ok.kimi.link/mardecortes2.jpg"
 ];
 
 const experiences = [
@@ -156,25 +168,142 @@ const faqs = [
   }
 ];
 
-// Hero Section Component
+// Hero Video URL
+const HERO_VIDEO_URL = "https://customer-assets.emergentagent.com/job_webpage-archive-1/artifacts/t8sqd8nt_video%20portada%20mar%20de%20cortes.mp4";
+
+// Yacht Detail Modal Component
+const YachtDetailModal = ({ yacht, isOpen, onClose, onReserve }) => {
+  if (!yacht) return null;
+
+  return (
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto p-0 bg-white" data-testid={`yacht-modal-${yacht.id}`}>
+        <button
+          onClick={onClose}
+          className="absolute right-4 top-4 z-10 bg-white/80 hover:bg-white rounded-full p-1 transition-colors"
+          data-testid="modal-close-btn"
+        >
+          <X className="w-5 h-5 text-slate-600" />
+        </button>
+        
+        <div className="p-6">
+          {/* Header */}
+          <DialogHeader className="mb-4">
+            <DialogTitle className="text-3xl font-bold text-slate-900">{yacht.name}</DialogTitle>
+            <p className="text-slate-600 mt-1">{yacht.shortDescription}</p>
+          </DialogHeader>
+
+          {/* Image */}
+          <div className="rounded-xl overflow-hidden mb-6 border border-slate-200">
+            <img
+              src={yacht.image}
+              alt={yacht.name}
+              className="w-full h-56 object-cover"
+            />
+          </div>
+
+          {/* Full Description */}
+          <p className="text-slate-700 mb-6 leading-relaxed">{yacht.fullDescription}</p>
+
+          {/* Price Section */}
+          {yacht.priceOptions ? (
+            <div className="bg-slate-50 rounded-xl p-4 mb-6">
+              <div className="flex items-center gap-2 mb-3">
+                <Sparkles className="w-5 h-5 text-[hsl(var(--gold))]" />
+                <h4 className="font-bold text-slate-900">Precios por Capacidad</h4>
+              </div>
+              <div className="grid grid-cols-3 gap-3">
+                {yacht.priceOptions.map((option, index) => (
+                  <div key={index} className="bg-[hsl(var(--gold))]/10 rounded-lg p-3 text-center">
+                    <div className="text-xl font-bold text-[hsl(var(--primary))]">{option.price}</div>
+                    <div className="text-xs text-slate-600">{option.capacity}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <div className="bg-slate-50 rounded-xl p-4 mb-6 flex items-center justify-between">
+              <span className="font-bold text-slate-900">Precio por hora:</span>
+              <span className="text-2xl font-bold text-[hsl(var(--primary))]">{yacht.price}</span>
+            </div>
+          )}
+
+          {/* Specifications and Services */}
+          <div className="grid md:grid-cols-2 gap-6 mb-6">
+            {/* Specifications */}
+            <div>
+              <div className="flex items-center gap-2 mb-3">
+                <Anchor className="w-5 h-5 text-[hsl(var(--primary))]" />
+                <h4 className="font-bold text-slate-900">Especificaciones</h4>
+              </div>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-slate-600">Eslora:</span>
+                  <span className="font-medium text-slate-900">{yacht.length}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-slate-600">Capacidad máxima:</span>
+                  <span className="font-medium text-slate-900">{yacht.capacity} personas</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-slate-600">Precio:</span>
+                  <span className="font-medium text-[hsl(var(--primary))]">{yacht.price}/hora</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Services */}
+            <div>
+              <div className="flex items-center gap-2 mb-3">
+                <Sparkles className="w-5 h-5 text-[hsl(var(--gold))]" />
+                <h4 className="font-bold text-slate-900">Servicios Disponibles</h4>
+              </div>
+              <div className="space-y-2">
+                {yacht.services.map((service, index) => (
+                  <div key={index} className="flex items-center gap-2 text-sm">
+                    <Check className="w-4 h-4 text-green-500" />
+                    <span className="text-slate-700">{service}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Includes */}
+          <div className="mb-6">
+            <h4 className="font-bold text-slate-900 mb-3">Todo Incluido</h4>
+            <div className="flex flex-wrap gap-2">
+              {yacht.includes.map((item, index) => (
+                <span
+                  key={index}
+                  className="bg-[hsl(var(--gold))]/20 text-slate-700 px-3 py-1.5 rounded-full text-sm font-medium"
+                >
+                  {item}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Reserve Button */}
+          <button
+            onClick={() => {
+              onClose();
+              onReserve(yacht);
+            }}
+            className="w-full bg-[hsl(var(--primary))] hover:bg-[hsl(var(--ocean-deep))] text-white py-4 px-4 rounded-xl font-semibold transition-colors flex items-center justify-center gap-2 text-lg"
+            data-testid={`modal-reserve-${yacht.id}`}
+          >
+            <Calendar className="w-5 h-5" />
+            Reservar {yacht.name}
+          </button>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+// Hero Section Component with Video
 const HeroSection = () => {
-  const [currentImage, setCurrentImage] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentImage((prev) => (prev + 1) % heroImages.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const prevImage = () => {
-    setCurrentImage((prev) => (prev - 1 + heroImages.length) % heroImages.length);
-  };
-
-  const nextImage = () => {
-    setCurrentImage((prev) => (prev + 1) % heroImages.length);
-  };
-
   const scrollToFlota = () => {
     document.getElementById('flota')?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -185,49 +314,19 @@ const HeroSection = () => {
 
   return (
     <section id="inicio" className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Images */}
+      {/* Background Video */}
       <div className="absolute inset-0">
-        {heroImages.map((img, index) => (
-          <div
-            key={index}
-            className={`absolute inset-0 transition-opacity duration-1000 ${
-              index === currentImage ? 'opacity-100' : 'opacity-0'
-            }`}
-          >
-            <img src={img} alt={`Yate ${index + 1}`} className="w-full h-full object-cover" />
-          </div>
-        ))}
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full h-full object-cover"
+          data-testid="hero-video"
+        >
+          <source src={HERO_VIDEO_URL} type="video/mp4" />
+        </video>
         <div className="absolute inset-0 bg-gradient-to-b from-slate-900/60 via-slate-900/40 to-slate-900/70"></div>
-      </div>
-
-      {/* Navigation Arrows */}
-      <button
-        onClick={prevImage}
-        className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-white/20 hover:bg-white/30 backdrop-blur-sm p-3 rounded-full transition-colors"
-        data-testid="hero-prev-btn"
-      >
-        <ChevronLeft className="w-6 h-6 text-white" />
-      </button>
-      <button
-        onClick={nextImage}
-        className="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-white/20 hover:bg-white/30 backdrop-blur-sm p-3 rounded-full transition-colors"
-        data-testid="hero-next-btn"
-      >
-        <ChevronRight className="w-6 h-6 text-white" />
-      </button>
-
-      {/* Dots */}
-      <div className="absolute bottom-24 left-1/2 -translate-x-1/2 z-20 flex gap-2">
-        {heroImages.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => setCurrentImage(index)}
-            className={`w-2 h-2 rounded-full transition-all ${
-              index === currentImage ? 'bg-white w-6' : 'bg-white/50'
-            }`}
-            data-testid={`hero-dot-${index}`}
-          />
-        ))}
       </div>
 
       {/* Content */}
@@ -290,7 +389,7 @@ const HeroSection = () => {
 };
 
 // Yacht Card Component
-const YachtCard = ({ yacht, onReserve }) => {
+const YachtCard = ({ yacht, onViewDetails }) => {
   return (
     <div className={`card-luxury group relative ${yacht.isPremium ? 'ring-2 ring-[hsl(var(--gold))]' : ''}`} data-testid={`yacht-card-${yacht.id}`}>
       {yacht.isPremium && (
@@ -321,7 +420,7 @@ const YachtCard = ({ yacht, onReserve }) => {
           </span>
         </div>
         
-        <p className="text-slate-600 mb-4">{yacht.description}</p>
+        <p className="text-slate-600 mb-4">{yacht.shortDescription}</p>
         
         <div className="flex items-center gap-4 mb-4 text-sm text-slate-600">
           <span className="flex items-center gap-1">
@@ -335,22 +434,22 @@ const YachtCard = ({ yacht, onReserve }) => {
         </div>
         
         <div className="flex flex-wrap gap-2 mb-6">
-          {yacht.features.slice(0, 4).map((feature, index) => (
+          {yacht.includes.slice(0, 4).map((feature, index) => (
             <span key={index} className="text-xs bg-slate-100 text-slate-600 px-2 py-1 rounded">
               {feature}
             </span>
           ))}
-          {yacht.features.length > 4 && (
+          {yacht.includes.length > 4 && (
             <span className="text-xs bg-slate-100 text-slate-600 px-2 py-1 rounded">
-              +{yacht.features.length - 4}
+              +{yacht.includes.length - 4}
             </span>
           )}
         </div>
         
         <button
-          onClick={() => onReserve(yacht)}
+          onClick={() => onViewDetails(yacht)}
           className="w-full bg-[hsl(var(--primary))] hover:bg-[hsl(var(--ocean-deep))] text-white py-2 px-4 rounded-md font-medium transition-colors"
-          data-testid={`reserve-yacht-${yacht.id}`}
+          data-testid={`view-details-${yacht.id}`}
         >
           Ver Detalles y Reservar
         </button>
@@ -360,7 +459,7 @@ const YachtCard = ({ yacht, onReserve }) => {
 };
 
 // Fleet Section
-const FleetSection = ({ onReserve }) => {
+const FleetSection = ({ onViewDetails }) => {
   return (
     <section id="flota" className="section-padding bg-white">
       <div className="container-custom mx-auto">
@@ -378,7 +477,7 @@ const FleetSection = ({ onReserve }) => {
         
         <div className="grid md:grid-cols-2 gap-8">
           {yachts.map((yacht) => (
-            <YachtCard key={yacht.id} yacht={yacht} onReserve={onReserve} />
+            <YachtCard key={yacht.id} yacht={yacht} onViewDetails={onViewDetails} />
           ))}
         </div>
       </div>
@@ -1005,6 +1104,14 @@ const Footer = () => {
 
 // Main App Component
 function App() {
+  const [selectedYacht, setSelectedYacht] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleViewDetails = (yacht) => {
+    setSelectedYacht(yacht);
+    setIsModalOpen(true);
+  };
+
   const scrollToContact = () => {
     document.getElementById('contacto')?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -1013,12 +1120,20 @@ function App() {
     <div className="min-h-screen bg-slate-50" data-testid="app-container">
       <Navigation />
       <HeroSection />
-      <FleetSection onReserve={scrollToContact} />
+      <FleetSection onViewDetails={handleViewDetails} />
       <ExperiencesSection onReserve={scrollToContact} />
       <ProcessSection />
       <FAQSection />
       <ContactSection />
       <Footer />
+      
+      {/* Yacht Detail Modal */}
+      <YachtDetailModal
+        yacht={selectedYacht}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onReserve={scrollToContact}
+      />
     </div>
   );
 }
