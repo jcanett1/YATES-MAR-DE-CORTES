@@ -1,52 +1,1024 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import "@/App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import axios from "axios";
+import {
+  MapPin, Anchor, Users, Clock, ChevronDown, ChevronLeft, ChevronRight,
+  Star, Compass, Phone, Mail, Instagram, Facebook, Send, Heart, CircleCheckBig
+} from "lucide-react";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
+// Yacht Data
+const yachts = [
+  {
+    id: "derby",
+    name: "Derby",
+    price: "$1,600",
+    priceRange: null,
+    capacity: 6,
+    length: "28 pies",
+    description: "Embarcación perfecta para pesca y paseos íntimos en el Mar de Cortés.",
+    image: "https://4sdu63dub3c3u.ok.kimi.link/yate-derby.jpg",
+    features: ["Equipo de pesca completo", "Hielera con hielo", "Salvavidas certificados", "Botellas de agua", "Capitán certificado", "Combustible incluido", "Radio VHF"],
+    isPremium: false
+  },
+  {
+    id: "adios-dinero",
+    name: "Adios Dinero",
+    price: "$2,200",
+    priceRange: null,
+    capacity: 15,
+    length: "38 pies",
+    description: "Espacio, comodidad y diversión para grupos medianos con servicio completo.",
+    image: "https://4sdu63dub3c3u.ok.kimi.link/yate-adios-dinero.jpg",
+    features: ["Tapete acuático", "Equipo de pesca completo", "Hielera con hielo", "Salvavidas certificados", "Bocinas bluetooth", "Sombra", "Baño a bordo", "Ceviche en paseos 4+ hrs"],
+    isPremium: false
+  },
+  {
+    id: "annabella",
+    name: "Annabella",
+    price: "$3,100",
+    priceRange: null,
+    capacity: 18,
+    length: "45 pies",
+    description: "Lujo y elegancia para grupos grandes que buscan una experiencia premium.",
+    image: "https://4sdu63dub3c3u.ok.kimi.link/yate-annabella.jpg",
+    features: ["Tapete acuático", "Equipo de pesca completo", "Hielera con hielo", "Salvavidas certificados", "Sistema de sonido premium", "Área lounge", "Baño completo", "Ceviche en paseos 4+ hrs"],
+    isPremium: true
+  },
+  {
+    id: "mar-de-cortez",
+    name: "Mar de Cortez",
+    price: "$3,500 - $4,500",
+    priceRange: true,
+    capacity: 25,
+    length: "55 pies",
+    description: "La joya de la corona. El yate más grande con opciones flexibles de capacidad.",
+    image: "https://4sdu63dub3c3u.ok.kimi.link/yate-mar-de-cortes.jpg",
+    features: ["Tapete acuático", "Equipo de pesca completo", "Hielera con hielo", "Salvavidas certificados", "Sistema de sonido premium", "Área lounge amplia", "Baño completo", "Ceviche incluido"],
+    isPremium: true
+  }
+];
 
-const Home = () => {
-  const helloWorldApi = async () => {
-    try {
-      const response = await axios.get(`${API}/`);
-      console.log(response.data.message);
-    } catch (e) {
-      console.error(e, `errored out requesting / api`);
-    }
-  };
+const heroImages = [
+  "https://4sdu63dub3c3u.ok.kimi.link/yate-derby.jpg",
+  "https://4sdu63dub3c3u.ok.kimi.link/yate-adios-dinero.jpg",
+  "https://4sdu63dub3c3u.ok.kimi.link/yate-annabella.jpg",
+  "https://4sdu63dub3c3u.ok.kimi.link/yate-mar-de-cortes.jpg",
+  "https://4sdu63dub3c3u.ok.kimi.link/adiosdinero2.jpg",
+  "https://4sdu63dub3c3u.ok.kimi.link/annabella2.jpg",
+  "https://4sdu63dub3c3u.ok.kimi.link/derby2.jpg",
+  "https://4sdu63dub3c3u.ok.kimi.link/mardecortes2.jpg"
+];
+
+const experiences = [
+  {
+    id: "day-charter",
+    title: "Day Charter de Lujo",
+    duration: "4 u 8 horas",
+    capacity: "2-25 personas",
+    description: "Disfruta de un día completo en el Mar de Cortés. Navega por aguas cristalinas, ancla en calas privadas y sumérgete en el mundo submarino.",
+    image: "https://4sdu63dub3c3u.ok.kimi.link/experiencia-snorkel.jpg",
+    includes: ["Capitán certificado", "Combustible", "Equipo de pesca", "Tapete acuático", "Bebidas de cortesía", "Ceviche (4+ hrs)"],
+    recommendedYacht: "Annabella o Mar de Cortez"
+  },
+  {
+    id: "sunset",
+    title: "Atardecer Romántico",
+    duration: "3 horas",
+    capacity: "2-6 personas",
+    description: "El momento más mágico del día en el mar. Navega mientras el sol se pinta de naranja y rosa en el horizonte, brindando con tu persona especial.",
+    image: "https://4sdu63dub3c3u.ok.kimi.link/experiencia-atardecer.jpg",
+    includes: ["Capitán experto", "Música ambiental", "Bebidas de cortesía", "Tapete acuático", "Ceviche"],
+    recommendedYacht: "Adios Dinero"
+  },
+  {
+    id: "party",
+    title: "Fiestas y Celebraciones",
+    duration: "4-6 horas",
+    capacity: "10-25 personas",
+    description: "Cumpleaños, despedidas, aniversarios o simplemente porque sí. Celebra en grande sobre las aguas más hermosas de México.",
+    image: "https://4sdu63dub3c3u.ok.kimi.link/experiencia-fiesta.jpg",
+    includes: ["Capitán dedicado", "Sistema de sonido", "Hieleras grandes", "Tapete acuático", "Área de baile", "Ceviche incluido"],
+    recommendedYacht: "Mar de Cortez"
+  },
+  {
+    id: "fishing",
+    title: "Pesca Deportiva",
+    duration: "4-8 horas",
+    capacity: "2-6 personas",
+    description: "El Mar de Cortés es hogar de algunas de las especies más codiciadas. Dorado, marlín, atún y más te esperan.",
+    image: "https://4sdu63dub3c3u.ok.kimi.link/yate-derby.jpg",
+    includes: ["Capitán experto", "Equipo profesional", "Carnada viva", "Hieleras", "Ceviche con tu pesca", "Licencias incluidas"],
+    recommendedYacht: "Derby"
+  }
+];
+
+const processSteps = [
+  { number: "01", title: "Elige", description: "Selecciona tu yate y experiencia ideal" },
+  { number: "02", title: "Solicita", description: "Envía tu solicitud con fecha y detalles" },
+  { number: "03", title: "Confirma", description: "Te contactamos con disponibilidad y costo" },
+  { number: "04", title: "Anticipo", description: "Realiza el pago para asegurar tu fecha" },
+  { number: "05", title: "Disfruta", description: "Llega al muelle y vive la experiencia" }
+];
+
+const faqs = [
+  {
+    question: "¿Qué incluye la renta del yate?",
+    answer: "Todos nuestros yates incluyen: capitán certificado, combustible, equipo de seguridad (salvavidas), hielera con hielo, botellas de agua de cortesía, y equipo de pesca básico. Los yates más grandes también incluyen tapete acuático, sistema de sonido y ceviche en paseos de 4+ horas."
+  },
+  {
+    question: "¿Qué debo llevar para el paseo?",
+    answer: "Te recomendamos traer: protector solar (biodegradable de preferencia), toalla, traje de baño, gorra o sombrero, lentes de sol, cámara resistente al agua, y cualquier bebida o snack adicional que desees. Nosotros proporcionamos agua y hielo."
+  },
+  {
+    question: "¿Cuál es la política ante mal clima?",
+    answer: "Tu seguridad es nuestra prioridad. Si las condiciones climáticas no son favorables, te contactaremos para reprogramar tu paseo sin costo adicional. El capitán tiene la última palabra sobre si es seguro navegar."
+  },
+  {
+    question: "¿Cuál es la política de cancelación?",
+    answer: "Cancelación gratuita hasta 7 días antes de tu reserva. Cancelaciones con menos de 7 días de anticipación tendrán un cargo del 50% del anticipo. No-shows o cancelaciones el mismo día no son reembolsables."
+  },
+  {
+    question: "¿Los yates cuentan con todas las medidas de seguridad?",
+    answer: "Absolutamente. Todos nuestros yates cuentan con salvavidas certificados para cada pasajero, equipo de primeros auxilios, radio VHF, GPS, y bengalas de emergencia. Nuestros capitanes están certificados y tienen años de experiencia navegando el Mar de Cortés."
+  },
+  {
+    question: "¿Se permite el consumo de alcohol a bordo?",
+    answer: "Sí, puedes traer tus propias bebidas alcohólicas. Te pedimos consumo responsable y que te mantengas hidratado con agua. Contamos con hieleras para mantener tus bebidas frías."
+  },
+  {
+    question: "¿Pueden ir niños a bordo?",
+    answer: "¡Claro que sí! Los niños son bienvenidos. Contamos con salvavidas de diferentes tallas. Recomendamos supervisión constante de los menores, especialmente cerca de las áreas de agua."
+  }
+];
+
+// Hero Section Component
+const HeroSection = () => {
+  const [currentImage, setCurrentImage] = useState(0);
 
   useEffect(() => {
-    helloWorldApi();
+    const interval = setInterval(() => {
+      setCurrentImage((prev) => (prev + 1) % heroImages.length);
+    }, 5000);
+    return () => clearInterval(interval);
   }, []);
 
+  const prevImage = () => {
+    setCurrentImage((prev) => (prev - 1 + heroImages.length) % heroImages.length);
+  };
+
+  const nextImage = () => {
+    setCurrentImage((prev) => (prev + 1) % heroImages.length);
+  };
+
+  const scrollToFlota = () => {
+    document.getElementById('flota')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const scrollToContacto = () => {
+    document.getElementById('contacto')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
-    <div>
-      <header className="App-header">
-        <a
-          className="App-link"
-          href="https://emergent.sh"
-          target="_blank"
-          rel="noopener noreferrer"
+    <section id="inicio" className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Background Images */}
+      <div className="absolute inset-0">
+        {heroImages.map((img, index) => (
+          <div
+            key={index}
+            className={`absolute inset-0 transition-opacity duration-1000 ${
+              index === currentImage ? 'opacity-100' : 'opacity-0'
+            }`}
+          >
+            <img src={img} alt={`Yate ${index + 1}`} className="w-full h-full object-cover" />
+          </div>
+        ))}
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-900/60 via-slate-900/40 to-slate-900/70"></div>
+      </div>
+
+      {/* Navigation Arrows */}
+      <button
+        onClick={prevImage}
+        className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-white/20 hover:bg-white/30 backdrop-blur-sm p-3 rounded-full transition-colors"
+        data-testid="hero-prev-btn"
+      >
+        <ChevronLeft className="w-6 h-6 text-white" />
+      </button>
+      <button
+        onClick={nextImage}
+        className="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-white/20 hover:bg-white/30 backdrop-blur-sm p-3 rounded-full transition-colors"
+        data-testid="hero-next-btn"
+      >
+        <ChevronRight className="w-6 h-6 text-white" />
+      </button>
+
+      {/* Dots */}
+      <div className="absolute bottom-24 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+        {heroImages.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => setCurrentImage(index)}
+            className={`w-2 h-2 rounded-full transition-all ${
+              index === currentImage ? 'bg-white w-6' : 'bg-white/50'
+            }`}
+            data-testid={`hero-dot-${index}`}
+          />
+        ))}
+      </div>
+
+      {/* Content */}
+      <div className="relative z-10 container-custom mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex items-center justify-center gap-2 mb-6 animate-fade-in">
+            <MapPin className="w-5 h-5 text-[hsl(var(--gold))]" />
+            <span className="text-white/90 text-lg">Marina de San Carlos, Sonora, México</span>
+          </div>
+          
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-6 leading-tight animate-slide-up">
+            Descubre el <span className="text-[hsl(var(--gold))]">Mar de Cortés</span> en Yate
+          </h1>
+          
+          <p className="text-xl md:text-2xl text-white/90 mb-10 max-w-2xl mx-auto animate-slide-up" style={{ animationDelay: '0.2s' }}>
+            Experiencias de lujo a bordo de nuestra flota exclusiva en San Carlos, Sonora. Desde $1,600 por hora.
+          </p>
+          
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-slide-up" style={{ animationDelay: '0.4s' }}>
+            <button onClick={scrollToContacto} className="btn-primary text-lg" data-testid="reserve-btn">
+              Reserva tu Experiencia
+            </button>
+            <button onClick={scrollToFlota} className="btn-secondary text-lg" data-testid="fleet-btn">
+              Conoce Nuestra Flota
+            </button>
+          </div>
+          
+          {/* Stats */}
+          <div className="mt-16 grid grid-cols-4 gap-4 max-w-3xl mx-auto animate-slide-up" style={{ animationDelay: '0.6s' }}>
+            <div className="text-center">
+              <div className="text-3xl md:text-4xl font-bold text-[hsl(var(--gold))]">4</div>
+              <div className="text-white/80 text-sm mt-1">Yates</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl md:text-4xl font-bold text-[hsl(var(--gold))]">6-25</div>
+              <div className="text-white/80 text-sm mt-1">Capacidad</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl md:text-4xl font-bold text-[hsl(var(--gold))]">$1,600</div>
+              <div className="text-white/80 text-sm mt-1">Desde/hora</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl md:text-4xl font-bold text-[hsl(var(--gold))]">15+</div>
+              <div className="text-white/80 text-sm mt-1">Años Exp.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Scroll Down */}
+      <button
+        onClick={scrollToFlota}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/70 hover:text-white transition-colors animate-bounce z-20"
+        data-testid="scroll-down-btn"
+      >
+        <ChevronDown className="w-8 h-8" />
+      </button>
+    </section>
+  );
+};
+
+// Yacht Card Component
+const YachtCard = ({ yacht, onReserve }) => {
+  return (
+    <div className={`card-luxury group relative ${yacht.isPremium ? 'ring-2 ring-[hsl(var(--gold))]' : ''}`} data-testid={`yacht-card-${yacht.id}`}>
+      {yacht.isPremium && (
+        <div className="absolute top-4 left-4 bg-[hsl(var(--gold))] text-slate-900 px-3 py-1 rounded-full text-sm font-bold z-10">
+          <Star className="w-4 h-4 inline mr-1" /> Premium
+        </div>
+      )}
+      
+      <div className="relative h-64 overflow-hidden">
+        <img
+          src={yacht.image}
+          alt={yacht.name}
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+        />
+        <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full">
+          <div className="flex items-center gap-1 text-sm font-medium text-slate-700">
+            <Users className="w-4 h-4" />
+            {yacht.capacity} px
+          </div>
+        </div>
+      </div>
+      
+      <div className="p-6">
+        <div className="flex items-center justify-between mb-2">
+          <h3 className="text-2xl font-bold text-slate-900">{yacht.name}</h3>
+          <span className="text-xl font-bold text-[hsl(var(--primary))]">
+            {yacht.price}<span className="text-sm text-slate-500 font-normal">/hora</span>
+          </span>
+        </div>
+        
+        <p className="text-slate-600 mb-4">{yacht.description}</p>
+        
+        <div className="flex items-center gap-4 mb-4 text-sm text-slate-600">
+          <span className="flex items-center gap-1">
+            <Anchor className="w-4 h-4 text-[hsl(var(--primary))]" />
+            {yacht.length}
+          </span>
+          <span className="flex items-center gap-1">
+            <Users className="w-4 h-4 text-[hsl(var(--primary))]" />
+            Máx. {yacht.capacity}
+          </span>
+        </div>
+        
+        <div className="flex flex-wrap gap-2 mb-6">
+          {yacht.features.slice(0, 4).map((feature, index) => (
+            <span key={index} className="text-xs bg-slate-100 text-slate-600 px-2 py-1 rounded">
+              {feature}
+            </span>
+          ))}
+          {yacht.features.length > 4 && (
+            <span className="text-xs bg-slate-100 text-slate-600 px-2 py-1 rounded">
+              +{yacht.features.length - 4}
+            </span>
+          )}
+        </div>
+        
+        <button
+          onClick={() => onReserve(yacht)}
+          className="w-full bg-[hsl(var(--primary))] hover:bg-[hsl(var(--ocean-deep))] text-white py-2 px-4 rounded-md font-medium transition-colors"
+          data-testid={`reserve-yacht-${yacht.id}`}
         >
-          <img src="https://avatars.githubusercontent.com/in/1201222?s=120&u=2686cf91179bbafbc7a71bfbc43004cf9ae1acea&v=4" />
-        </a>
-        <p className="mt-5">Building something incredible ~!</p>
-      </header>
+          Ver Detalles y Reservar
+        </button>
+      </div>
     </div>
   );
 };
 
-function App() {
+// Fleet Section
+const FleetSection = ({ onReserve }) => {
   return (
-    <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />}>
-            <Route index element={<Home />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
+    <section id="flota" className="section-padding bg-white">
+      <div className="container-custom mx-auto">
+        <div className="text-center mb-16">
+          <span className="inline-flex items-center justify-center rounded-full border px-3 py-1 text-xs font-medium mb-4 bg-[hsl(var(--primary))]/10 text-[hsl(var(--primary))]">
+            <Anchor className="w-4 h-4 mr-1" /> Nuestra Flota
+          </span>
+          <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
+            Elige tu <span className="text-gradient">Embarcación</span>
+          </h2>
+          <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+            Cuatro yates equipados para ofrecerte la mejor experiencia en el Mar de Cortés. Desde paseos íntimos hasta grandes celebraciones.
+          </p>
+        </div>
+        
+        <div className="grid md:grid-cols-2 gap-8">
+          {yachts.map((yacht) => (
+            <YachtCard key={yacht.id} yacht={yacht} onReserve={onReserve} />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+// Experience Card Component
+const ExperienceCard = ({ experience, onReserve }) => {
+  return (
+    <div className="card-luxury overflow-hidden group" data-testid={`experience-card-${experience.id}`}>
+      <div className="relative h-56 overflow-hidden">
+        <img
+          src={experience.image}
+          alt={experience.title}
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent"></div>
+        <div className="absolute bottom-4 left-4 right-4">
+          <h3 className="text-2xl font-bold text-white mb-1">{experience.title}</h3>
+          <div className="flex items-center gap-4 text-white/80 text-sm">
+            <span className="flex items-center gap-1">
+              <Clock className="w-4 h-4" /> {experience.duration}
+            </span>
+            <span className="flex items-center gap-1">
+              <Users className="w-4 h-4" /> {experience.capacity}
+            </span>
+          </div>
+        </div>
+      </div>
+      
+      <div className="p-6">
+        <p className="text-slate-600 mb-4">{experience.description}</p>
+        
+        <div className="mb-4">
+          <h4 className="text-sm font-semibold text-slate-900 mb-2">Incluye:</h4>
+          <div className="flex flex-wrap gap-2">
+            {experience.includes.map((item, index) => (
+              <span key={index} className="text-xs bg-[hsl(var(--primary))]/10 text-[hsl(var(--primary))] px-2 py-1 rounded">
+                {item}
+              </span>
+            ))}
+          </div>
+        </div>
+        
+        <div className="flex items-center justify-between">
+          <div className="text-sm text-slate-600">
+            <span className="font-medium">Yate recomendado:</span> {experience.recommendedYacht}
+          </div>
+          <button
+            onClick={() => onReserve(experience)}
+            className="px-4 py-2 rounded-md border border-[hsl(var(--primary))] text-[hsl(var(--primary))] hover:bg-[hsl(var(--primary))] hover:text-white transition-colors text-sm font-medium"
+            data-testid={`reserve-experience-${experience.id}`}
+          >
+            Reservar
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Experiences Section
+const ExperiencesSection = ({ onReserve }) => {
+  return (
+    <section id="experiencias" className="section-padding bg-gradient-to-b from-slate-50 to-white">
+      <div className="container-custom mx-auto">
+        <div className="text-center mb-16">
+          <span className="inline-flex items-center justify-center rounded-full border px-3 py-1 text-xs font-medium mb-4 bg-[hsl(var(--accent))]/10 text-[hsl(var(--accent))]">
+            <Compass className="w-4 h-4 mr-1" /> Experiencias
+          </span>
+          <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
+            Aventuras en el <span className="text-gradient">Mar de Cortés</span>
+          </h2>
+          <p className="text-lg text-slate-600 max-w-3xl mx-auto">
+            Conocido como "El Acuario del Mundo", el Mar de Cortés te espera con aguas cristalinas, vida marina extraordinaria y paisajes que quitan el aliento.
+          </p>
+        </div>
+        
+        <div className="grid md:grid-cols-2 gap-8">
+          {experiences.map((exp) => (
+            <ExperienceCard key={exp.id} experience={exp} onReserve={onReserve} />
+          ))}
+        </div>
+        
+        {/* Ceviche Banner */}
+        <div className="mt-12 bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--ocean-deep))] rounded-2xl p-8 text-white">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+            <div>
+              <h3 className="text-2xl font-bold mb-2">Ceviche incluido</h3>
+              <p className="text-white/90">
+                En todos nuestros paseos de 4 horas o más, disfruta de delicioso ceviche fresco preparado a bordo. ¡La mejor manera de disfrutar tu pesca!
+              </p>
+            </div>
+            <div className="text-right">
+              <div className="text-4xl font-bold text-[hsl(var(--gold))]">4+</div>
+              <div className="text-white/80">horas</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+// Process Section
+const ProcessSection = () => {
+  return (
+    <section id="proceso" className="section-padding bg-white">
+      <div className="container-custom mx-auto">
+        <div className="text-center mb-16">
+          <span className="inline-flex items-center justify-center rounded-full border px-3 py-1 text-xs font-medium mb-4 bg-[hsl(var(--primary))]/10 text-[hsl(var(--primary))]">
+            <CircleCheckBig className="w-4 h-4 mr-1" /> Proceso Simple
+          </span>
+          <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
+            Reserva en <span className="text-gradient">5 Pasos</span>
+          </h2>
+        </div>
+        
+        <div className="grid md:grid-cols-5 gap-6">
+          {processSteps.map((step, index) => (
+            <div key={index} className="relative" data-testid={`process-step-${index + 1}`}>
+              <div className="bg-slate-50 p-6 rounded-xl shadow-lg text-center h-full hover:shadow-xl transition-shadow">
+                <div className="text-4xl font-bold text-[hsl(var(--primary))]/20 mb-3">{step.number}</div>
+                <h3 className="font-bold text-slate-900 mb-2">{step.title}</h3>
+                <p className="text-sm text-slate-600">{step.description}</p>
+              </div>
+              {index < processSteps.length - 1 && (
+                <div className="hidden md:block absolute top-1/2 -right-3 w-6 h-0.5 bg-[hsl(var(--primary))]/30"></div>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+// FAQ Section
+const FAQSection = () => {
+  return (
+    <section id="faq" className="section-padding bg-slate-50">
+      <div className="container-custom mx-auto">
+        <div className="max-w-3xl mx-auto">
+          <div className="text-center mb-12">
+            <span className="inline-flex items-center justify-center rounded-full border px-3 py-1 text-xs font-medium mb-4 bg-[hsl(var(--primary))]/10 text-[hsl(var(--primary))]">
+              <CircleCheckBig className="w-4 h-4 mr-1" /> Preguntas Frecuentes
+            </span>
+            <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
+              Todo lo que <span className="text-gradient">Necesitas Saber</span>
+            </h2>
+          </div>
+          
+          <Accordion type="single" collapsible className="space-y-4">
+            {faqs.map((faq, index) => (
+              <AccordionItem
+                key={index}
+                value={`item-${index}`}
+                className="border bg-white rounded-lg px-6"
+                data-testid={`faq-item-${index}`}
+              >
+                <AccordionTrigger className="text-left font-semibold text-slate-900 hover:no-underline">
+                  {faq.question}
+                </AccordionTrigger>
+                <AccordionContent className="text-slate-600 pb-4">
+                  {faq.answer}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+// Contact Section
+const ContactSection = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    date: '',
+    guests: '',
+    yacht: '',
+    message: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    
+    // Simulate form submission
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    setIsSubmitting(false);
+    setSubmitted(true);
+    
+    // Reset after 3 seconds
+    setTimeout(() => {
+      setSubmitted(false);
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        date: '',
+        guests: '',
+        yacht: '',
+        message: ''
+      });
+    }, 3000);
+  };
+
+  return (
+    <section id="contacto" className="section-padding bg-gradient-to-b from-slate-900 to-slate-800 text-white">
+      <div className="container-custom mx-auto">
+        <div className="grid lg:grid-cols-2 gap-12">
+          {/* Contact Info */}
+          <div>
+            <span className="inline-flex items-center justify-center rounded-full border px-3 py-1 text-xs font-medium mb-4 bg-white/10 text-white">
+              <Phone className="w-4 h-4 mr-1" /> Contacto
+            </span>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+              Reserva tu <span className="text-[hsl(var(--gold))]">Aventura</span>
+            </h2>
+            <p className="text-lg text-white/80 mb-8">
+              Completa el formulario y te contactaremos en menos de 24 horas para confirmar disponibilidad y detalles de tu experiencia.
+            </p>
+            
+            <div className="space-y-6 mb-8">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center">
+                  <Phone className="w-5 h-5 text-[hsl(var(--gold))]" />
+                </div>
+                <div>
+                  <div className="text-sm text-white/60">WhatsApp</div>
+                  <div className="font-medium">622-228-58-88</div>
+                  <div className="font-medium">622-126-05-97</div>
+                </div>
+              </div>
+              
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center">
+                  <Mail className="w-5 h-5 text-[hsl(var(--gold))]" />
+                </div>
+                <div>
+                  <div className="text-sm text-white/60">Email</div>
+                  <div className="font-medium">renta.yates.sancarlos@gmail.com</div>
+                </div>
+              </div>
+              
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center">
+                  <MapPin className="w-5 h-5 text-[hsl(var(--gold))]" />
+                </div>
+                <div>
+                  <div className="text-sm text-white/60">Ubicación</div>
+                  <div className="font-medium">Marina de San Carlos, Sonora, México</div>
+                </div>
+              </div>
+              
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center">
+                  <Instagram className="w-5 h-5 text-[hsl(var(--gold))]" />
+                </div>
+                <div>
+                  <div className="text-sm text-white/60">Instagram</div>
+                  <a
+                    href="https://www.instagram.com/yates_mardecortes_sancarlos/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-medium hover:text-[hsl(var(--gold))] transition-colors"
+                  >
+                    @yates_mardecortes_sancarlos
+                  </a>
+                </div>
+              </div>
+              
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center">
+                  <Facebook className="w-5 h-5 text-[hsl(var(--gold))]" />
+                </div>
+                <div>
+                  <div className="text-sm text-white/60">Facebook</div>
+                  <a
+                    href="https://www.facebook.com/profile.php?id=100065035719361"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-medium hover:text-[hsl(var(--gold))] transition-colors"
+                  >
+                    Yates Mar de Cortés San Carlos
+                  </a>
+                </div>
+              </div>
+            </div>
+            
+            {/* Trust Badge */}
+            <div className="bg-white/5 backdrop-blur-sm p-6 rounded-xl">
+              <div className="flex items-center gap-2 mb-3">
+                <Heart className="w-5 h-5 text-red-400" />
+                <span className="font-semibold">Reserva con Confianza</span>
+              </div>
+              <p className="text-sm text-white/70">
+                Anticipo flexible • Cancelación gratuita hasta 7 días antes • Reprogramación sin costo por mal clima
+              </p>
+            </div>
+          </div>
+          
+          {/* Contact Form */}
+          <div className="bg-white rounded-2xl p-8 text-slate-900">
+            <h3 className="text-2xl font-bold mb-6">Solicita tu Reserva</h3>
+            
+            {submitted ? (
+              <div className="text-center py-12">
+                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <CircleCheckBig className="w-8 h-8 text-green-600" />
+                </div>
+                <h4 className="text-xl font-bold text-slate-900 mb-2">¡Solicitud Enviada!</h4>
+                <p className="text-slate-600">Te contactaremos en menos de 24 horas.</p>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-4" data-testid="contact-form">
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium mb-1">Nombre</label>
+                    <input
+                      type="text"
+                      placeholder="Tu nombre"
+                      required
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      className="w-full h-10 px-3 rounded-md border border-slate-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--primary))]"
+                      data-testid="contact-name"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-1">Email</label>
+                    <input
+                      type="email"
+                      placeholder="tu@email.com"
+                      required
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      className="w-full h-10 px-3 rounded-md border border-slate-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--primary))]"
+                      data-testid="contact-email"
+                    />
+                  </div>
+                </div>
+                
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium mb-1">Teléfono</label>
+                    <input
+                      type="tel"
+                      placeholder="+52 ..."
+                      required
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      className="w-full h-10 px-3 rounded-md border border-slate-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--primary))]"
+                      data-testid="contact-phone"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-1">Fecha Deseada</label>
+                    <input
+                      type="date"
+                      required
+                      value={formData.date}
+                      onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                      className="w-full h-10 px-3 rounded-md border border-slate-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--primary))]"
+                      data-testid="contact-date"
+                    />
+                  </div>
+                </div>
+                
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium mb-1">Número de Personas</label>
+                    <input
+                      type="number"
+                      placeholder="2-25"
+                      min="1"
+                      max="25"
+                      required
+                      value={formData.guests}
+                      onChange={(e) => setFormData({ ...formData, guests: e.target.value })}
+                      className="w-full h-10 px-3 rounded-md border border-slate-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--primary))]"
+                      data-testid="contact-guests"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-1">Yate Preferido</label>
+                    <select
+                      required
+                      value={formData.yacht}
+                      onChange={(e) => setFormData({ ...formData, yacht: e.target.value })}
+                      className="w-full h-10 px-3 rounded-md border border-slate-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--primary))]"
+                      data-testid="contact-yacht"
+                    >
+                      <option value="">Selecciona...</option>
+                      <option value="derby">Derby ($1,600/hr)</option>
+                      <option value="adios-dinero">Adios Dinero ($2,200/hr)</option>
+                      <option value="annabella">Annabella ($3,100/hr)</option>
+                      <option value="mar-de-cortez">Mar de Cortez ($3,500-$4,500/hr)</option>
+                    </select>
+                  </div>
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium mb-1">Mensaje (opcional)</label>
+                  <textarea
+                    placeholder="Cuéntanos más sobre lo que buscas..."
+                    rows={4}
+                    value={formData.message}
+                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                    className="w-full px-3 py-2 rounded-md border border-slate-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--primary))] resize-none"
+                    data-testid="contact-message"
+                  />
+                </div>
+                
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full bg-[hsl(var(--primary))] hover:bg-[hsl(var(--ocean-deep))] text-white py-3 px-4 rounded-md font-medium transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
+                  data-testid="contact-submit"
+                >
+                  <Send className="w-5 h-5" />
+                  {isSubmitting ? 'Enviando...' : 'Enviar Solicitud'}
+                </button>
+                
+                <p className="text-xs text-slate-500 text-center">
+                  Te contactaremos en menos de 24 horas vía WhatsApp o email.
+                </p>
+              </form>
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+// Navigation Component
+const Navigation = () => {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const navLinks = [
+    { name: 'Inicio', href: '#inicio' },
+    { name: 'Flota', href: '#flota' },
+    { name: 'Experiencias', href: '#experiencias' },
+    { name: 'Proceso', href: '#proceso' },
+    { name: 'FAQ', href: '#faq' },
+    { name: 'Contacto', href: '#contacto' }
+  ];
+
+  return (
+    <nav
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled ? 'bg-white/95 backdrop-blur-md shadow-lg' : 'bg-transparent'
+      }`}
+      data-testid="navigation"
+    >
+      <div className="container-custom mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16 md:h-20">
+          {/* Logo */}
+          <a href="#inicio" className="flex items-center gap-2" data-testid="nav-logo">
+            <Anchor className={`w-8 h-8 ${isScrolled ? 'text-[hsl(var(--primary))]' : 'text-white'}`} />
+            <span className={`font-bold text-lg ${isScrolled ? 'text-slate-900' : 'text-white'}`}>
+              Yates Mar de Cortés
+            </span>
+          </a>
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center gap-8">
+            {navLinks.map((link) => (
+              <a
+                key={link.name}
+                href={link.href}
+                className={`text-sm font-medium transition-colors hover:text-[hsl(var(--gold))] ${
+                  isScrolled ? 'text-slate-700' : 'text-white/90'
+                }`}
+                data-testid={`nav-link-${link.name.toLowerCase()}`}
+              >
+                {link.name}
+              </a>
+            ))}
+            <a
+              href="#contacto"
+              className="btn-primary text-sm py-2 px-4"
+              data-testid="nav-reserve-btn"
+            >
+              Reservar
+            </a>
+          </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className={`md:hidden p-2 ${isScrolled ? 'text-slate-900' : 'text-white'}`}
+            data-testid="mobile-menu-btn"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              {isMobileMenuOpen ? (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              ) : (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              )}
+            </svg>
+          </button>
+        </div>
+
+        {/* Mobile Menu */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden bg-white rounded-b-2xl shadow-lg py-4 px-4">
+            {navLinks.map((link) => (
+              <a
+                key={link.name}
+                href={link.href}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="block py-3 text-slate-700 font-medium hover:text-[hsl(var(--primary))]"
+              >
+                {link.name}
+              </a>
+            ))}
+            <a
+              href="#contacto"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="block mt-4 btn-primary text-center"
+            >
+              Reservar
+            </a>
+          </div>
+        )}
+      </div>
+    </nav>
+  );
+};
+
+// Footer Component
+const Footer = () => {
+  return (
+    <footer className="bg-slate-900 text-white py-12" data-testid="footer">
+      <div className="container-custom mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid md:grid-cols-4 gap-8 mb-8">
+          <div>
+            <div className="flex items-center gap-2 mb-4">
+              <Anchor className="w-8 h-8 text-[hsl(var(--gold))]" />
+              <span className="font-bold text-lg">Yates Mar de Cortés</span>
+            </div>
+            <p className="text-white/70 text-sm">
+              Experiencias de lujo en el "Acuario del Mundo". Más de 15 años navegando el Mar de Cortés.
+            </p>
+          </div>
+          
+          <div>
+            <h4 className="font-semibold mb-4">Navegación</h4>
+            <ul className="space-y-2 text-sm text-white/70">
+              <li><a href="#flota" className="hover:text-white transition-colors">Nuestra Flota</a></li>
+              <li><a href="#experiencias" className="hover:text-white transition-colors">Experiencias</a></li>
+              <li><a href="#proceso" className="hover:text-white transition-colors">Cómo Reservar</a></li>
+              <li><a href="#faq" className="hover:text-white transition-colors">FAQ</a></li>
+            </ul>
+          </div>
+          
+          <div>
+            <h4 className="font-semibold mb-4">Yates</h4>
+            <ul className="space-y-2 text-sm text-white/70">
+              <li>Derby - $1,600/hr</li>
+              <li>Adios Dinero - $2,200/hr</li>
+              <li>Annabella - $3,100/hr</li>
+              <li>Mar de Cortez - $3,500+/hr</li>
+            </ul>
+          </div>
+          
+          <div>
+            <h4 className="font-semibold mb-4">Contacto</h4>
+            <ul className="space-y-2 text-sm text-white/70">
+              <li>622-228-58-88</li>
+              <li>622-126-05-97</li>
+              <li>renta.yates.sancarlos@gmail.com</li>
+              <li>Marina de San Carlos, Sonora</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-sm text-white/50">
+            © {new Date().getFullYear()} Yates Mar de Cortés. Todos los derechos reservados.
+          </p>
+          <div className="flex items-center gap-4">
+            <a
+              href="https://www.instagram.com/yates_mardecortes_sancarlos/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-white/50 hover:text-white transition-colors"
+            >
+              <Instagram className="w-5 h-5" />
+            </a>
+            <a
+              href="https://www.facebook.com/profile.php?id=100065035719361"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-white/50 hover:text-white transition-colors"
+            >
+              <Facebook className="w-5 h-5" />
+            </a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
+// Main App Component
+function App() {
+  const scrollToContact = () => {
+    document.getElementById('contacto')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  return (
+    <div className="min-h-screen bg-slate-50" data-testid="app-container">
+      <Navigation />
+      <HeroSection />
+      <FleetSection onReserve={scrollToContact} />
+      <ExperiencesSection onReserve={scrollToContact} />
+      <ProcessSection />
+      <FAQSection />
+      <ContactSection />
+      <Footer />
     </div>
   );
 }
