@@ -1247,10 +1247,11 @@ const Navigation = () => {
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
           <a href="#inicio" className="flex items-center gap-2" data-testid="nav-logo">
-            <Anchor className={`w-8 h-8 ${isScrolled ? 'text-[hsl(var(--primary))]' : 'text-white'}`} />
-            <span className={`font-bold text-lg ${isScrolled ? 'text-slate-900' : 'text-white'}`}>
-              Yates Mar de Cortés
-            </span>
+            <img 
+              src="https://customer-assets.emergentagent.com/job_webpage-archive-1/artifacts/c2dvpmhf_logo%20emmanuel%20yates.png" 
+              alt="Yates Mar de Cortés" 
+              className="h-12 w-auto"
+            />
           </a>
 
           {/* Desktop Navigation */}
@@ -1327,8 +1328,11 @@ const Footer = () => {
         <div className="grid md:grid-cols-4 gap-8 mb-8">
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <Anchor className="w-8 h-8 text-[hsl(var(--gold))]" />
-              <span className="font-bold text-lg">Yates Mar de Cortés</span>
+              <img 
+                src="https://customer-assets.emergentagent.com/job_webpage-archive-1/artifacts/c2dvpmhf_logo%20emmanuel%20yates.png" 
+                alt="Yates Mar de Cortés" 
+                className="h-16 w-auto"
+              />
             </div>
             <p className="text-white/70 text-sm">
               Experiencias de lujo en el "Acuario del Mundo". Más de 15 años navegando el Mar de Cortés.
