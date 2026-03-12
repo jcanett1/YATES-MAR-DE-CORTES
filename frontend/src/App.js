@@ -30,8 +30,13 @@ const yachts = [
     length: "28 pies",
     shortDescription: "Embarcación perfecta para pesca y paseos íntimos en el Mar de Cortés.",
     fullDescription: "El 'Derby' es una embarcación ágil y versátil, ideal para grupos pequeños que buscan una experiencia auténtica de pesca o un paseo tranquilo por las aguas cristalinas del Mar de Cortés. Equipado con todo lo necesario para una jornada exitosa en el mar.",
-    image: "https://4sdu63dub3c3u.ok.kimi.link/yate-derby.jpg",
-    gallery: [],
+    image: "https://customer-assets.emergentagent.com/job_webpage-archive-1/artifacts/ke2kh1sm_derby1.jpg",
+    gallery: [
+      "https://customer-assets.emergentagent.com/job_webpage-archive-1/artifacts/ke2kh1sm_derby1.jpg",
+      "https://customer-assets.emergentagent.com/job_webpage-archive-1/artifacts/7oprf9qq_derby4.jpg",
+      "https://customer-assets.emergentagent.com/job_webpage-archive-1/artifacts/fffsrrie_derby3.jpg",
+      "https://customer-assets.emergentagent.com/job_webpage-archive-1/artifacts/3yfhx3dl_derby2.jpg"
+    ],
     services: ["Pesca deportiva", "Paseos por el mar", "Day charter"],
     includes: ["Equipo de pesca completo", "Hielera con hielo", "Salvavidas certificados", "Botellas de agua", "Baño", "Sistema de música", "Ceviche (a partir de 4 horas)"],
     isPremium: false,
