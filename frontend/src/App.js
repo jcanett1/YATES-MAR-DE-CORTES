@@ -96,8 +96,9 @@ const yachts = [
     length: "55 pies",
     shortDescription: "La joya de la corona. El yate más grande con opciones flexibles de capacidad.",
     fullDescription: "El 'Mar de Cortez' es nuestra embarcación insignia, diseñada para ofrecer la máxima experiencia de lujo en el mar. Con múltiples opciones de capacidad, se adapta a grupos de diferentes tamaños sin sacrificar comodidad ni estilo. La elección perfecta para quienes buscan lo extraordinario.",
-    image: "https://customer-assets.emergentagent.com/job_webpage-archive-1/artifacts/zf28i92i_mardecortes7.jpg",
+    image: "https://customer-assets.emergentagent.com/job_webpage-archive-1/artifacts/yq15l919_mardecortes1.jpg",
     gallery: [
+      "https://customer-assets.emergentagent.com/job_webpage-archive-1/artifacts/yq15l919_mardecortes1.jpg",
       "https://customer-assets.emergentagent.com/job_webpage-archive-1/artifacts/zf28i92i_mardecortes7.jpg",
       "https://customer-assets.emergentagent.com/job_webpage-archive-1/artifacts/bt2awwgi_mardecortes3.jpg",
       "https://customer-assets.emergentagent.com/job_webpage-archive-1/artifacts/hluf48f9_mardecortes2.jpg",
