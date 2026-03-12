@@ -96,8 +96,14 @@ const yachts = [
     length: "55 pies",
     shortDescription: "La joya de la corona. El yate más grande con opciones flexibles de capacidad.",
     fullDescription: "El 'Mar de Cortez' es nuestra embarcación insignia, diseñada para ofrecer la máxima experiencia de lujo en el mar. Con múltiples opciones de capacidad, se adapta a grupos de diferentes tamaños sin sacrificar comodidad ni estilo. La elección perfecta para quienes buscan lo extraordinario.",
-    image: "https://4sdu63dub3c3u.ok.kimi.link/yate-mar-de-cortes.jpg",
-    gallery: [],
+    image: "https://customer-assets.emergentagent.com/job_webpage-archive-1/artifacts/zf28i92i_mardecortes7.jpg",
+    gallery: [
+      "https://customer-assets.emergentagent.com/job_webpage-archive-1/artifacts/zf28i92i_mardecortes7.jpg",
+      "https://customer-assets.emergentagent.com/job_webpage-archive-1/artifacts/bt2awwgi_mardecortes3.jpg",
+      "https://customer-assets.emergentagent.com/job_webpage-archive-1/artifacts/hluf48f9_mardecortes2.jpg",
+      "https://customer-assets.emergentagent.com/job_webpage-archive-1/artifacts/nct514ve_mardecortes4.jpg",
+      "https://customer-assets.emergentagent.com/job_webpage-archive-1/artifacts/losznlkm_mardecortes5.jpg"
+    ],
     services: ["Day charter de lujo", "Eventos corporativos", "Bodas en yate", "Grandes celebraciones"],
     includes: ["Tapete acuático", "Equipo de pesca completo", "Hielera con hielo", "Salvavidas certificados", "Botellas de agua", "Baño", "Marinero asistiendo", "Sistema de música premium", "Ceviche (a partir de 4 horas)"],
     isPremium: true,
