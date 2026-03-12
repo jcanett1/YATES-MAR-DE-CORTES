@@ -52,7 +52,8 @@ const yachts = [
       "https://customer-assets.emergentagent.com/job_webpage-archive-1/artifacts/awzcb28n_adiosdinero3.jpg",
       "https://customer-assets.emergentagent.com/job_webpage-archive-1/artifacts/6igb7u2b_adiosdinero2.jpg",
       "https://customer-assets.emergentagent.com/job_webpage-archive-1/artifacts/qh5y3d7x_adiosdiner6.jpg",
-      "https://customer-assets.emergentagent.com/job_webpage-archive-1/artifacts/wczvocln_adiosdiner5.jpg"
+      "https://customer-assets.emergentagent.com/job_webpage-archive-1/artifacts/wczvocln_adiosdiner5.jpg",
+      "https://customer-assets.emergentagent.com/job_webpage-archive-1/artifacts/84dbi9lt_adiosdinero4.jpg"
     ],
     services: ["Day charter", "Fiestas a bordo", "Pesca deportiva", "Paseos familiares"],
     includes: ["Tapete acuático", "Equipo de pesca completo", "Hielera con hielo", "Salvavidas certificados", "Botellas de agua", "Baño", "Marinero asistiendo", "Sistema de música", "Ceviche (a partir de 4 horas)"],
