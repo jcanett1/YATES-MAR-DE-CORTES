@@ -1384,7 +1384,10 @@ const Navigation = () => {
               src="https://customer-assets.emergentagent.com/job_webpage-archive-1/artifacts/qqdma0he_logo_emmanuel_yates-removebg-preview.png" 
               alt="Yates Mar de Cortés" 
               className="h-14 w-auto"
-              style={{ mixBlendMode: 'lighten' }}
+              style={{ 
+                mixBlendMode: isScrolled ? 'normal' : 'lighten',
+                filter: isScrolled ? 'invert(1) sepia(1) saturate(5) hue-rotate(5deg)' : 'none'
+              }}
             />
           </a>
 
