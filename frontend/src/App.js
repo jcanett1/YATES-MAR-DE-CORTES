@@ -93,7 +93,7 @@ const yachts = [
     price: "$3,500 - $4,500",
     priceRange: true,
     capacity: 25,
-    length: "48 pies",
+    length: "40 pies",
     shortDescription: "La joya de la corona. El yate más grande con opciones flexibles de capacidad.",
     fullDescription: "El 'Mar de Cortez' es nuestra embarcación insignia, diseñada para ofrecer la máxima experiencia de lujo en el mar. Con múltiples opciones de capacidad, se adapta a grupos de diferentes tamaños sin sacrificar comodidad ni estilo. La elección perfecta para quienes buscan lo extraordinario.",
     image: "https://customer-assets.emergentagent.com/job_webpage-archive-1/artifacts/yq15l919_mardecortes1.jpg",
