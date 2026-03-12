@@ -802,15 +802,22 @@ const AmenitiesSection = () => {
         </div>
         
         {/* Ceviche Banner */}
-        <div className="mt-12 bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--ocean-deep))] rounded-2xl p-8 text-white">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div>
+        <div className="mt-12 bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--ocean-deep))] rounded-2xl overflow-hidden">
+          <div className="flex flex-col md:flex-row items-center">
+            <div className="md:w-1/3">
+              <img 
+                src="https://customer-assets.emergentagent.com/job_webpage-archive-1/artifacts/2wiepue4_image.png" 
+                alt="Ceviche fresco" 
+                className="w-full h-48 md:h-full object-cover"
+              />
+            </div>
+            <div className="p-8 text-white md:w-2/3">
               <h3 className="text-2xl font-bold mb-2">Ceviche incluido</h3>
               <p className="text-white/90">
                 En todos nuestros paseos de 4 horas o más, disfruta de delicioso ceviche fresco preparado a bordo. ¡La mejor manera de disfrutar tu pesca!
               </p>
             </div>
-            <div className="text-right">
+            <div className="p-8 text-right">
               <div className="text-4xl font-bold text-[hsl(var(--gold))]">4+</div>
               <div className="text-white/80">horas</div>
             </div>
