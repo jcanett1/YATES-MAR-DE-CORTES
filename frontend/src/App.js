@@ -1381,9 +1381,10 @@ const Navigation = () => {
           {/* Logo */}
           <a href="#inicio" className="flex items-center gap-2" data-testid="nav-logo">
             <img 
-              src="https://customer-assets.emergentagent.com/job_webpage-archive-1/artifacts/rdqq69xg_logo%20emmanuel%20yates.png" 
+              src="https://customer-assets.emergentagent.com/job_webpage-archive-1/artifacts/qqdma0he_logo_emmanuel_yates-removebg-preview.png" 
               alt="Yates Mar de Cortés" 
-              className="h-12 w-auto"
+              className="h-14 w-auto"
+              style={{ mixBlendMode: 'lighten' }}
             />
           </a>
 
@@ -1462,9 +1463,9 @@ const Footer = () => {
           <div>
             <div className="flex items-center gap-2 mb-4">
               <img 
-                src="https://customer-assets.emergentagent.com/job_webpage-archive-1/artifacts/rdqq69xg_logo%20emmanuel%20yates.png" 
+                src="https://customer-assets.emergentagent.com/job_webpage-archive-1/artifacts/qqdma0he_logo_emmanuel_yates-removebg-preview.png" 
                 alt="Yates Mar de Cortés" 
-                className="h-16 w-auto"
+                className="h-20 w-auto"
               />
             </div>
             <p className="text-white/70 text-sm">
