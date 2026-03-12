@@ -169,8 +169,12 @@ const faqs = [
   }
 ];
 
-// Hero Video URL
-const HERO_VIDEO_URL = "https://customer-assets.emergentagent.com/job_webpage-archive-1/artifacts/t8sqd8nt_video%20portada%20mar%20de%20cortes.mp4";
+// Hero Images
+const heroImages = [
+  "https://customer-assets.emergentagent.com/job_webpage-archive-1/artifacts/0hhjp7tj_image.png",
+  "https://customer-assets.emergentagent.com/job_webpage-archive-1/artifacts/shy9xijz_image.png",
+  "https://customer-assets.emergentagent.com/job_webpage-archive-1/artifacts/d9vfn1av_image.png"
+];
 
 // Testimonials Data
 const testimonials = [
@@ -361,8 +365,25 @@ const YachtDetailModal = ({ yacht, isOpen, onClose, onReserve }) => {
   );
 };
 
-// Hero Section Component with Video
+// Hero Section Component with Image Carousel
 const HeroSection = () => {
+  const [currentImage, setCurrentImage] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImage((prev) => (prev + 1) % heroImages.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const prevImage = () => {
+    setCurrentImage((prev) => (prev - 1 + heroImages.length) % heroImages.length);
+  };
+
+  const nextImage = () => {
+    setCurrentImage((prev) => (prev + 1) % heroImages.length);
+  };
+
   const scrollToFlota = () => {
     document.getElementById('flota')?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -373,21 +394,49 @@ const HeroSection = () => {
 
   return (
     <section id="inicio" className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Video */}
+      {/* Background Images Carousel */}
       <div className="absolute inset-0">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-          className="w-full h-full object-cover"
-          style={{ imageRendering: 'high-quality' }}
-          data-testid="hero-video"
-        >
-          <source src={HERO_VIDEO_URL} type="video/mp4" />
-        </video>
+        {heroImages.map((img, index) => (
+          <div
+            key={index}
+            className={`absolute inset-0 transition-opacity duration-1000 ${
+              index === currentImage ? 'opacity-100' : 'opacity-0'
+            }`}
+          >
+            <img src={img} alt={`Yate ${index + 1}`} className="w-full h-full object-cover" />
+          </div>
+        ))}
         <div className="absolute inset-0 bg-gradient-to-b from-slate-900/60 via-slate-900/40 to-slate-900/70"></div>
+      </div>
+
+      {/* Navigation Arrows */}
+      <button
+        onClick={prevImage}
+        className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-white/20 hover:bg-white/30 backdrop-blur-sm p-3 rounded-full transition-colors"
+        data-testid="hero-prev-btn"
+      >
+        <ChevronLeft className="w-6 h-6 text-white" />
+      </button>
+      <button
+        onClick={nextImage}
+        className="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-white/20 hover:bg-white/30 backdrop-blur-sm p-3 rounded-full transition-colors"
+        data-testid="hero-next-btn"
+      >
+        <ChevronRight className="w-6 h-6 text-white" />
+      </button>
+
+      {/* Dots */}
+      <div className="absolute bottom-24 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+        {heroImages.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => setCurrentImage(index)}
+            className={`w-2 h-2 rounded-full transition-all ${
+              index === currentImage ? 'bg-white w-6' : 'bg-white/50'
+            }`}
+            data-testid={`hero-dot-${index}`}
+          />
+        ))}
       </div>
 
       {/* Content */}
