@@ -31,6 +31,7 @@ const yachts = [
     shortDescription: "Embarcación perfecta para pesca y paseos íntimos en el Mar de Cortés.",
     fullDescription: "El 'Derby' es una embarcación ágil y versátil, ideal para grupos pequeños que buscan una experiencia auténtica de pesca o un paseo tranquilo por las aguas cristalinas del Mar de Cortés. Equipado con todo lo necesario para una jornada exitosa en el mar.",
     image: "https://4sdu63dub3c3u.ok.kimi.link/yate-derby.jpg",
+    gallery: [],
     services: ["Pesca deportiva", "Paseos por el mar", "Day charter"],
     includes: ["Equipo de pesca completo", "Hielera con hielo", "Salvavidas certificados", "Botellas de agua", "Baño", "Sistema de música", "Ceviche (a partir de 4 horas)"],
     isPremium: false,
@@ -45,7 +46,14 @@ const yachts = [
     length: "38 pies",
     shortDescription: "Espacio, comodidad y diversión para grupos medianos con servicio completo.",
     fullDescription: "El 'Adios Dinero' ofrece el equilibrio perfecto entre espacio y comodidad. Con capacidad para 15 personas, es ideal para celebraciones familiares, reuniones de amigos o simplemente disfrutar de un día inolvidable en el mar con todo el servicio incluido.",
-    image: "https://4sdu63dub3c3u.ok.kimi.link/yate-adios-dinero.jpg",
+    image: "https://customer-assets.emergentagent.com/job_webpage-archive-1/artifacts/zi62lel4_adiosdinero1.jpg",
+    gallery: [
+      "https://customer-assets.emergentagent.com/job_webpage-archive-1/artifacts/zi62lel4_adiosdinero1.jpg",
+      "https://customer-assets.emergentagent.com/job_webpage-archive-1/artifacts/awzcb28n_adiosdinero3.jpg",
+      "https://customer-assets.emergentagent.com/job_webpage-archive-1/artifacts/6igb7u2b_adiosdinero2.jpg",
+      "https://customer-assets.emergentagent.com/job_webpage-archive-1/artifacts/qh5y3d7x_adiosdiner6.jpg",
+      "https://customer-assets.emergentagent.com/job_webpage-archive-1/artifacts/wczvocln_adiosdiner5.jpg"
+    ],
     services: ["Day charter", "Fiestas a bordo", "Pesca deportiva", "Paseos familiares"],
     includes: ["Tapete acuático", "Equipo de pesca completo", "Hielera con hielo", "Salvavidas certificados", "Botellas de agua", "Baño", "Marinero asistiendo", "Sistema de música", "Ceviche (a partir de 4 horas)"],
     isPremium: false,
@@ -61,6 +69,7 @@ const yachts = [
     shortDescription: "Lujo y elegancia para grupos grandes que buscan una experiencia premium.",
     fullDescription: "La 'Annabella' es sinónimo de elegancia en el mar. Esta imponente embarcación ofrece espacios amplios, acabados de lujo y un servicio impecable. Perfecta para eventos especiales, celebraciones importantes o simplemente para quienes buscan lo mejor.",
     image: "https://4sdu63dub3c3u.ok.kimi.link/yate-annabella.jpg",
+    gallery: [],
     services: ["Day charter premium", "Eventos especiales", "Celebraciones", "Pesca de lujo"],
     includes: ["Tapete acuático", "Equipo de pesca completo", "Hielera con hielo", "Salvavidas certificados", "Botellas de agua", "Baño", "Marinero asistiendo", "Sistema de música premium", "Ceviche (a partir de 4 horas)"],
     isPremium: true,
@@ -76,6 +85,7 @@ const yachts = [
     shortDescription: "La joya de la corona. El yate más grande con opciones flexibles de capacidad.",
     fullDescription: "El 'Mar de Cortez' es nuestra embarcación insignia, diseñada para ofrecer la máxima experiencia de lujo en el mar. Con múltiples opciones de capacidad, se adapta a grupos de diferentes tamaños sin sacrificar comodidad ni estilo. La elección perfecta para quienes buscan lo extraordinario.",
     image: "https://4sdu63dub3c3u.ok.kimi.link/yate-mar-de-cortes.jpg",
+    gallery: [],
     services: ["Day charter de lujo", "Eventos corporativos", "Bodas en yate", "Grandes celebraciones"],
     includes: ["Tapete acuático", "Equipo de pesca completo", "Hielera con hielo", "Salvavidas certificados", "Botellas de agua", "Baño", "Marinero asistiendo", "Sistema de música premium", "Ceviche (a partir de 4 horas)"],
     isPremium: true,
@@ -236,13 +246,25 @@ const amenities = [
 
 // Yacht Detail Modal Component
 const YachtDetailModal = ({ yacht, isOpen, onClose, onReserve }) => {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  
   if (!yacht) return null;
 
+  const images = yacht.gallery && yacht.gallery.length > 0 ? yacht.gallery : [yacht.image];
+
+  const nextImage = () => {
+    setCurrentImageIndex((prev) => (prev + 1) % images.length);
+  };
+
+  const prevImage = () => {
+    setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
+  };
+
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={(open) => { if (!open) { setCurrentImageIndex(0); onClose(); } }}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto p-0 bg-white" data-testid={`yacht-modal-${yacht.id}`}>
         <button
-          onClick={onClose}
+          onClick={() => { setCurrentImageIndex(0); onClose(); }}
           className="absolute right-4 top-4 z-10 bg-white/80 hover:bg-white rounded-full p-1 transition-colors"
           data-testid="modal-close-btn"
         >
@@ -256,13 +278,49 @@ const YachtDetailModal = ({ yacht, isOpen, onClose, onReserve }) => {
             <DialogDescription className="text-slate-600 mt-1">{yacht.shortDescription}</DialogDescription>
           </DialogHeader>
 
-          {/* Image */}
-          <div className="rounded-xl overflow-hidden mb-6 border border-slate-200">
+          {/* Image Gallery */}
+          <div className="relative rounded-xl overflow-hidden mb-6 border border-slate-200">
             <img
-              src={yacht.image}
-              alt={yacht.name}
-              className="w-full h-56 object-cover"
+              src={images[currentImageIndex]}
+              alt={`${yacht.name} - ${currentImageIndex + 1}`}
+              className="w-full h-64 object-cover"
             />
+            
+            {images.length > 1 && (
+              <>
+                {/* Navigation Arrows */}
+                <button
+                  onClick={prevImage}
+                  className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+                <button
+                  onClick={nextImage}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors"
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </button>
+                
+                {/* Image Counter */}
+                <div className="absolute bottom-2 left-1/2 -translate-x-1/2 bg-black/60 text-white text-sm px-3 py-1 rounded-full">
+                  {currentImageIndex + 1} / {images.length}
+                </div>
+                
+                {/* Thumbnail Dots */}
+                <div className="absolute bottom-2 right-2 flex gap-1">
+                  {images.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setCurrentImageIndex(index)}
+                      className={`w-2 h-2 rounded-full transition-all ${
+                        index === currentImageIndex ? 'bg-white' : 'bg-white/50'
+                      }`}
+                    />
+                  ))}
+                </div>
+              </>
+            )}
           </div>
 
           {/* Full Description */}
