@@ -74,8 +74,14 @@ const yachts = [
     length: "45 pies",
     shortDescription: "Lujo y elegancia para grupos grandes que buscan una experiencia premium.",
     fullDescription: "La 'Annabella' es sinónimo de elegancia en el mar. Esta imponente embarcación ofrece espacios amplios, acabados de lujo y un servicio impecable. Perfecta para eventos especiales, celebraciones importantes o simplemente para quienes buscan lo mejor.",
-    image: "https://4sdu63dub3c3u.ok.kimi.link/yate-annabella.jpg",
-    gallery: [],
+    image: "https://customer-assets.emergentagent.com/job_webpage-archive-1/artifacts/jjtkwqkr_annabella2.jpg",
+    gallery: [
+      "https://customer-assets.emergentagent.com/job_webpage-archive-1/artifacts/jjtkwqkr_annabella2.jpg",
+      "https://customer-assets.emergentagent.com/job_webpage-archive-1/artifacts/bci5pasp_annabella3.jpg",
+      "https://customer-assets.emergentagent.com/job_webpage-archive-1/artifacts/6bnufvwa_annabella4.jpg",
+      "https://customer-assets.emergentagent.com/job_webpage-archive-1/artifacts/aa0tuu8t_annabella5.jpg",
+      "https://customer-assets.emergentagent.com/job_webpage-archive-1/artifacts/2o27dmtz_annabella7.jpg"
+    ],
     services: ["Day charter premium", "Eventos especiales", "Celebraciones", "Pesca de lujo"],
     includes: ["Tapete acuático", "Equipo de pesca completo", "Hielera con hielo", "Salvavidas certificados", "Botellas de agua", "Baño", "Marinero asistiendo", "Sistema de música premium", "Ceviche (a partir de 4 horas)"],
     isPremium: true,
