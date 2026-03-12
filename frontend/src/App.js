@@ -133,7 +133,7 @@ const experiences = [
     duration: "3 horas",
     capacity: "2-6 personas",
     description: "El momento más mágico del día en el mar. Navega mientras el sol se pinta de naranja y rosa en el horizonte, brindando con tu persona especial.",
-    image: "/images/atardecer.jpg",
+    image: process.env.PUBLIC_URL + "/images/atardecer.jpg",
     includes: ["Capitán experto", "Música ambiental", "Bebidas de cortesía", "Tapete acuático", "Ceviche"],
     recommendedYacht: "Adios Dinero"
   },
