@@ -143,7 +143,7 @@ const experiences = [
     duration: "4-6 horas",
     capacity: "10-25 personas",
     description: "Cumpleaños, despedidas, aniversarios o simplemente porque sí. Celebra en grande sobre las aguas más hermosas de México.",
-    image: "https://4sdu63dub3c3u.ok.kimi.link/experiencia-fiesta.jpg",
+   mage: process.env.PUBLIC_URL + "/images/fiestayate.jpg",
     includes: ["Capitán dedicado", "Sistema de sonido", "Hieleras grandes", "Tapete acuático", "Área de baile", "Ceviche incluido"],
     recommendedYacht: "Mar de Cortez"
   },
