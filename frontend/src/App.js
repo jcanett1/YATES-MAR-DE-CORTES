@@ -753,7 +753,7 @@ const CrewSection = () => {
           {/* Image */}
           <div className="relative">
             <img
-              src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&h=800&fit=crop"
+              src="https://customer-assets.emergentagent.com/job_webpage-archive-1/artifacts/j0rayw7n_image.png"
               alt="Capitán profesional"
               className="rounded-2xl shadow-2xl w-full object-cover h-[600px]"
             />
