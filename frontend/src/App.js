@@ -156,6 +156,16 @@ const experiences = [
     image: "https://4sdu63dub3c3u.ok.kimi.link/yate-derby.jpg",
     includes: ["Capitán experto", "Equipo profesional", "Carnada viva", "Hieleras", "Ceviche con tu pesca", "Licencias incluidas"],
     recommendedYacht: "Derby"
+  },
+  {
+    id: "paquete-belico",
+    title: "Paquete Bélico",
+    duration: "5 horas",
+    capacity: "Hasta 20 personas",
+    description: "El paquete más completo para celebrar en grande. Combina 5 horas de yate con 5 horas de música norteña en vivo, todo incluido para que solo te preocupes por disfrutar.",
+    image: process.env.PUBLIC_URL + "/images/fiestayate.jpg",
+    includes: ["5 horas de yate", "5 horas de norteño en vivo", "Tapete acuático", "Ceviche y botanas", "Aguas", "Botella", "Cervezas"],
+    recommendedYacht: "Mar de Cortez"
   }
 ];
 
