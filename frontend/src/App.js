@@ -163,7 +163,7 @@ const experiences = [
     duration: "5 horas",
     capacity: "Hasta 20 personas",
     description: "El paquete más completo para celebrar en grande. Combina 5 horas de yate con 5 horas de música norteña en vivo, todo incluido para que solo te preocupes por disfrutar.",
-    image: process.env.PUBLIC_URL + "/images/fiestayate.jpg",
+    video: "https://res.cloudinary.com/dbizz1jev/video/upload/v1773768104/paqutebelico_idqics.mov",
     includes: ["5 horas de yate", "5 horas de norteño en vivo", "Tapete acuático", "Ceviche y botanas", "Aguas", "Botella", "Cervezas"],
     recommendedYacht: "Mar de Cortez"
   }
