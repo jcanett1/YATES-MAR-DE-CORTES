@@ -687,11 +687,22 @@ const ExperienceCard = ({ experience, onReserve }) => {
   return (
     <div className="card-luxury overflow-hidden group" data-testid={`experience-card-${experience.id}`}>
       <div className="relative h-56 overflow-hidden">
-        <img
-          src={experience.image}
-          alt={experience.title}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-        />
+        {experience.video ? (
+          <video
+            src={experience.video}
+            className="w-full h-full object-cover"
+            autoPlay
+            muted
+            loop
+            playsInline
+          />
+        ) : (
+          <img
+            src={experience.image}
+            alt={experience.title}
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+          />
+        )}
         <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent"></div>
         <div className="absolute bottom-4 left-4 right-4">
           <h3 className="text-2xl font-bold text-white mb-1">{experience.title}</h3>
