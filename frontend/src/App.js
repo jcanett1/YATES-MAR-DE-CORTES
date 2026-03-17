@@ -683,68 +683,126 @@ const FleetSection = ({ onViewDetails }) => {
 };
 
 // Experience Card Component
-const ExperienceCard = ({ experience, onReserve }) => {
+const VideoModal = ({ videoUrl, onClose }) => {
   return (
-    <div className="card-luxury overflow-hidden group" data-testid={`experience-card-${experience.id}`}>
-      <div className="relative h-56 overflow-hidden">
-        {experience.video ? (
-          <video
-            src={experience.video}
-            className="w-full h-full object-cover"
-            autoPlay
-            muted
-            loop
-            playsInline
-          />
-        ) : (
-          <img
-            src={experience.image}
-            alt={experience.title}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-          />
-        )}
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent"></div>
-        <div className="absolute bottom-4 left-4 right-4">
-          <h3 className="text-2xl font-bold text-white mb-1">{experience.title}</h3>
-          <div className="flex items-center gap-4 text-white/80 text-sm">
-            <span className="flex items-center gap-1">
-              <Clock className="w-4 h-4" /> {experience.duration}
-            </span>
-            <span className="flex items-center gap-1">
-              <Users className="w-4 h-4" /> {experience.capacity}
-            </span>
-          </div>
-        </div>
-      </div>
-      
-      <div className="p-6">
-        <p className="text-slate-600 mb-4">{experience.description}</p>
-        
-        <div className="mb-4">
-          <h4 className="text-sm font-semibold text-slate-900 mb-2">Incluye:</h4>
-          <div className="flex flex-wrap gap-2">
-            {experience.includes.map((item, index) => (
-              <span key={index} className="text-xs bg-[hsl(var(--primary))]/10 text-[hsl(var(--primary))] px-2 py-1 rounded">
-                {item}
-              </span>
-            ))}
-          </div>
-        </div>
-        
-        <div className="flex items-center justify-between">
-          <div className="text-sm text-slate-600">
-            <span className="font-medium">Yate recomendado:</span> {experience.recommendedYacht}
-          </div>
-          <button
-            onClick={() => onReserve(experience)}
-            className="px-4 py-2 rounded-md border border-[hsl(var(--primary))] text-[hsl(var(--primary))] hover:bg-[hsl(var(--primary))] hover:text-white transition-colors text-sm font-medium"
-            data-testid={`reserve-experience-${experience.id}`}
-          >
-            Reservar
-          </button>
-        </div>
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
+      onClick={onClose}
+    >
+      <div
+        className="relative w-full max-w-4xl mx-4 rounded-2xl overflow-hidden shadow-2xl"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button
+          onClick={onClose}
+          className="absolute top-3 right-3 z-10 bg-black/60 hover:bg-black/80 text-white rounded-full w-9 h-9 flex items-center justify-center transition-colors"
+        >
+          <X className="w-5 h-5" />
+        </button>
+        <video
+          src={videoUrl}
+          className="w-full max-h-[80vh] object-contain bg-black"
+          controls
+          autoPlay
+          playsInline
+        />
       </div>
     </div>
+  );
+};
+
+const ExperienceCard = ({ experience, onReserve }) => {
+  const [showVideoModal, setShowVideoModal] = useState(false);
+
+  return (
+    <>
+      {showVideoModal && (
+        <VideoModal
+          videoUrl={experience.video}
+          onClose={() => setShowVideoModal(false)}
+        />
+      )}
+      <div className="card-luxury overflow-hidden group" data-testid={`experience-card-${experience.id}`}>
+        <div className="relative h-56 overflow-hidden">
+          {experience.video ? (
+            <video
+              src={experience.video}
+              className="w-full h-full object-cover"
+              autoPlay
+              muted
+              loop
+              playsInline
+            />
+          ) : (
+            <img
+              src={experience.image}
+              alt={experience.title}
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+            />
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent"></div>
+          {experience.video && (
+            <button
+              onClick={() => setShowVideoModal(true)}
+              className="absolute top-3 right-3 flex items-center gap-1.5 bg-white/20 hover:bg-white/40 backdrop-blur-sm text-white text-xs font-semibold px-3 py-1.5 rounded-full transition-all border border-white/40"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 fill-white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              Ver Video
+            </button>
+          )}
+          <div className="absolute bottom-4 left-4 right-4">
+            <h3 className="text-2xl font-bold text-white mb-1">{experience.title}</h3>
+            <div className="flex items-center gap-4 text-white/80 text-sm">
+              <span className="flex items-center gap-1">
+                <Clock className="w-4 h-4" /> {experience.duration}
+              </span>
+              <span className="flex items-center gap-1">
+                <Users className="w-4 h-4" /> {experience.capacity}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div className="p-6">
+          <p className="text-slate-600 mb-4">{experience.description}</p>
+
+          <div className="mb-4">
+            <h4 className="text-sm font-semibold text-slate-900 mb-2">Incluye:</h4>
+            <div className="flex flex-wrap gap-2">
+              {experience.includes.map((item, index) => (
+                <span key={index} className="text-xs bg-[hsl(var(--primary))]/10 text-[hsl(var(--primary))] px-2 py-1 rounded">
+                  {item}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between">
+            <div className="text-sm text-slate-600">
+              <span className="font-medium">Yate recomendado:</span> {experience.recommendedYacht}
+            </div>
+            <div className="flex items-center gap-2">
+              {experience.video && (
+                <button
+                  onClick={() => setShowVideoModal(true)}
+                  className="px-4 py-2 rounded-md bg-slate-800 hover:bg-slate-700 text-white transition-colors text-sm font-medium flex items-center gap-1.5"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 fill-white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                  Ver Video
+                </button>
+              )}
+              <button
+                onClick={() => onReserve(experience)}
+                className="px-4 py-2 rounded-md border border-[hsl(var(--primary))] text-[hsl(var(--primary))] hover:bg-[hsl(var(--primary))] hover:text-white transition-colors text-sm font-medium"
+                data-testid={`reserve-experience-${experience.id}`}
+              >
+                Reservar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
 
