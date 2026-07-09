@@ -90,7 +90,7 @@ const yachts = [
   {
     id: "mar-de-cortez",
     name: "Mar de Cortez",
-    price: "$3,500 - $4,500",
+    price: "$4,000 - $4,500",
     priceRange: true,
     capacity: 25,
     length: "40 pies",
@@ -109,7 +109,6 @@ const yachts = [
     includes: ["Tapete acuático", "Equipo de pesca completo", "Hielera con hielo", "Salvavidas certificados", "Botellas de agua", "Baño", "Marinero asistiendo", "Sistema de música premium", "Ceviche (a partir de 4 horas)"],
     isPremium: true,
     priceOptions: [
-      { price: "$3,500", capacity: "Hasta 15 personas" },
       { price: "$4,000", capacity: "Hasta 20 personas" },
       { price: "$4,500", capacity: "Hasta 25 personas" }
     ]
@@ -161,7 +160,7 @@ const experiences = [
     id: "paquete-belico",
     title: "Paquete Bélico",
     duration: "5 horas",
-    capacity: "Hasta 20 personas",
+    capacity: "Hasta 25 personas",
     description: "El paquete más completo para celebrar en grande. Combina 5 horas de yate con 5 horas de música norteña en vivo, todo incluido para que solo te preocupes por disfrutar.",
     video: "https://res.cloudinary.com/dbizz1jev/video/upload/v1773768104/paqutebelico_idqics.mov",
     includes: ["5 horas de yate", "5 horas de norteño en vivo", "Tapete acuático", "Ceviche y botanas", "Aguas", "Botella", "Cervezas"],
