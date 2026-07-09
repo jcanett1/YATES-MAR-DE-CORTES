@@ -45,9 +45,9 @@ const yachts = [
   {
     id: "adios-dinero",
     name: "Adios Dinero",
-    price: "$2,300",
+    price: "$2,500",
     priceRange: null,
-    capacity: 12,
+    capacity: 15,
     length: "34 pies",
     shortDescription: "Espacio, comodidad y diversión para grupos medianos con servicio completo.",
     fullDescription: "El 'Adios Dinero' ofrece el equilibrio perfecto entre espacio y comodidad. Con capacidad para 15 personas, es ideal para celebraciones familiares, reuniones de amigos o simplemente disfrutar de un día inolvidable en el mar con todo el servicio incluido.",
@@ -68,7 +68,7 @@ const yachts = [
   {
     id: "annabella",
     name: "Annabella",
-    price: "$3,100",
+    price: "$3,500",
     priceRange: null,
     capacity: 18,
     length: "48 pies",
