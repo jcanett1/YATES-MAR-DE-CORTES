@@ -1385,9 +1385,9 @@ _Enviado desde la página web_`;
                   >
                     <option value="">Selecciona...</option>
                     <option value="derby">Derby ($1,600/hr)</option>
-                    <option value="adios-dinero">Adios Dinero ($2,200/hr)</option>
-                    <option value="annabella">Annabella ($3,100/hr)</option>
-                    <option value="mar-de-cortez">Mar de Cortez ($3,500-$4,500/hr)</option>
+                    <option value="adios-dinero">Adios Dinero ($2,500/hr)</option>
+                    <option value="annabella">Annabella ($3,500/hr)</option>
+                    <option value="mar-de-cortez">Mar de Cortez ($4,000-$4,500/hr)</option>
                   </select>
                 </div>
                 
